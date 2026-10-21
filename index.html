@@ -5,6 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap">
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <style>
 /* Layout: white studio site; logo blue + orange carried by bold Poppins type, with soft sky / peach tint bands for a few sections. Light theme only by design. */
 :root{
@@ -343,8 +344,11 @@ tbody tr:last-child td{border-bottom:0}
 
 /* workshop detail */
 .wd{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:clamp(24px,4vw,44px);align-items:start}
-.wdhero{display:grid;grid-template-columns:280px minmax(0,1fr);gap:28px;align-items:start;margin-bottom:30px}
-.wdhero .poster{border-radius:18px;overflow:hidden;box-shadow:var(--shadow-lg);cursor:zoom-in;padding:0;border:0;background:none}
+.wdhero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(260px,300px);gap:clamp(20px,3vw,32px);align-items:start;margin-bottom:32px}
+.wdhero-poster{display:flex;justify-content:center;align-items:start}
+.wdhero .poster{border-radius:18px;overflow:hidden;box-shadow:var(--shadow-lg);cursor:zoom-in;padding:0;border:0;background:none;width:100%;max-width:300px;transition:transform .25s ease,box-shadow .25s ease;display:block}
+.wdhero .poster:hover{transform:translateY(-3px);box-shadow:0 20px 38px -10px rgba(15,27,45,.28)}
+.wdhero .poster img{width:100%;height:auto;display:block;border-radius:18px}
 .wdhero h1{font-size:clamp(2rem,4vw,3.2rem);text-transform:uppercase}
 .wdhero .by{font-size:1.15rem;font-weight:700;color:var(--orange)}
 .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}
@@ -389,7 +393,8 @@ tbody tr:last-child td{border-bottom:0}
 .secure{display:flex;gap:8px;align-items:center;font-size:.76rem;color:var(--muted);justify-content:center}
 .secure svg{width:14px;height:14px}
 @media (max-width:1000px){.wd{grid-template-columns:1fr}.book{position:static}}
-@media (max-width:640px){.wdhero{grid-template-columns:1fr}.wdhero .poster{max-width:300px}.facts{grid-template-columns:1fr}.person{grid-template-columns:90px minmax(0,1fr)}.person img{width:90px;height:110px}}
+@media (max-width:760px){.wdhero{grid-template-columns:1fr}.wdhero-poster{order:-1;margin-bottom:12px}.wdhero .poster{max-width:300px}}
+@media (max-width:640px){.facts{grid-template-columns:1fr}.person{grid-template-columns:90px minmax(0,1fr)}.person img{width:90px;height:110px}}
 
 /* facilitators */
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
@@ -1270,7 +1275,7 @@ html.mm-lock,html.mm-lock body{overflow:hidden}
 
 <div class="dock" id="dock">
   <button class="dock-btn ws-fab" id="wsFab" aria-expanded="false" aria-controls="wpop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M16 3v3M8 3v3M3 10h18"/></svg><span class="lbl fabtxt"><b>Workshops</b><small id="fabSub">open now</small></span><span class="cnt" id="wsCnt">0</span></button>
-  <a class="dock-btn wa-fab" href="https://wa.me/919655551055?text=Hi%20Rhythmic%20Beat%2C%20I%27d%20like%20to%20know%20more%20about%20your%20classes." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.7l-.4-.2-3.8 1.2 1.2-3.7-.3-.4a10.5 10.5 0 0 1-1.6-5.8C5.2 10 10 5.3 16 5.3S26.8 10 26.8 15.8 22 26.4 16 26.4zm5.9-7.9c-.3-.2-1.9-1-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.2 1.3 3.4c.2.2 2.3 3.5 5.6 4.9 2.8 1.1 3.3.9 3.9.8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg></a>
+  <a class="dock-btn wa-fab" id="waFab" href="https://wa.me/919655551055?text=Hi%20Rhythmic%20Beat%2C%20I%27d%20like%20to%20know%20more%20about%20your%20classes." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.7l-.4-.2-3.8 1.2 1.2-3.7-.3-.4a10.5 10.5 0 0 1-1.6-5.8C5.2 10 10 5.3 16 5.3S26.8 10 26.8 15.8 22 26.4 16 26.4zm5.9-7.9c-.3-.2-1.9-1-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.2 1.3 3.4c.2.2 2.3 3.5 5.6 4.9 2.8 1.1 3.3.9 3.9.8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg></a>
 </div>
 <div id="floatRoot"></div>
 <div id="modalRoot"></div>
@@ -1437,13 +1442,13 @@ const WORKSHOPS=[
  {id:"choreo-ishwarya",title:"Choreography Workshop",kind:"Choreography",date:"2026-11-01",start:"11:00 AM",end:"1:00 PM",dur:"2 hours",
   poster:"img/ws-ishwarya.jpg",photo:"img/p-ishwarya.jpg",by:"Ishwarya Balabharthy",byShort:"Ishwarya",song:"Announced to registered dancers",
   tagline:"A Sunday-morning choreography session with Ishwarya Balabharthy.",
-  tiers:[{k:"early",label:"Early bird",note:"Limited slots",amt:699},{k:"second",label:"Second slot",note:"After early bird closes",amt:799}],
+  tiers:[{k:"early",label:"Early bird",note:"Limited slots",amt:1},{k:"second",label:"Second slot",note:"After early bird closes",amt:799}],
   about:["Spend a Sunday morning learning a full routine with Ishwarya Balabharthy. The session covers warm-up, technique and a complete choreography taught at a comfortable pace.","Ideal for adults and teens who want a fun, polished piece to perform."],
   learn:["Warm-up and technique","Full choreography breakdown","Styling and expressions","Final run on camera"],
   forWho:"Teens and adults, all levels.",bring:["Floor shoes","Comfortable dance wear","Water bottle and towel"],
   bio:"Guest choreographer. Full profile to be added."},
   {id:"thandavam-laasyam",title:"Thandavam X Laasyam",kind:"Semi-Classical",date:"2026-10-25",start:"10:00 AM",end:"12:00 PM",dur:"2 hours",
-  poster:"img/YUVI-WORKSHOP-STORY.png",photo:"img/founders.jpg",by:"Master Yuvraaj Jayakumar",byShort:"Master Yuvraaj",song:"Narumugaye Narumugaye",
+  poster:"img/YUVI-WORKSHOP-STORY.png",photo:"img/YUVI-WORKSHOP-STORY.png",by:"Master Yuvraaj Jayakumar",byShort:"Master Yuvraaj",song:"Narumugaye Narumugaye",
   tagline:"Same song, different shades of expression. Discover how masculine and feminine expression transforms the same choreography.",
   tiers:[{k:"std",label:"Workshop seat",note:"₹999/- per seat · Autumn Dance Theatre",amt:999}],
   about:[
@@ -1518,7 +1523,8 @@ const I={
  video:sv('<rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/>')
 };
 
-/* ================= lead storage ================= */
+/* ================= google sheets sync & lead storage ================= */
+window.RB_SHEET_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxbQ5vVBqgyLhbVRWDmqblUTAVB3-lizLzXWWUZqu6jDunHgJwJrUGQCsDU7VE3rJXyiw/exec";
 let DB=null, USER=null, UID=null;
 (async()=>{
   try{ if(window.claude?.use){
@@ -1526,17 +1532,80 @@ let DB=null, USER=null, UID=null;
     if(USER){ try{UID=await USER.id()}catch{} if(await USER.canEdit().catch(()=>false)){$("#leadsLink").hidden=false; if(route().name==="leads")render();} }
   }}catch{}
 })();
-async function saveEntry(kind,data){
+async function saveEntry(kind,data,opts={}){
   const entry={kind,...data,at:new Date().toISOString(),page:location.hash||"#home"};
   const local=store.get("rb_entries",[]); local.push(entry); store.set("rb_entries",local);
   if(DB&&UID){ try{ const ref=DB.doc("leads/"+UID); const snap=await ref.get(); const prev=snap.exists?(snap.data().entries||[]):[];
     await ref.set({entries:[...prev,entry].slice(-40),latest:entry,updatedAt:entry.at}); }catch(e){} }
+  if(opts.localOnly) return entry;
+  let phpContacted = false;
+  try {
+    const res = await fetch("send-mail.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(entry)
+    });
+    if (res.ok) {
+      phpContacted = true;
+      const json = await res.json().catch(() => null);
+      if (json && json.sheet_synced) {
+        console.info("[GoogleSheets] Lead recorded in Google Sheet:", json.sheet_info);
+      }
+      if (json && json.demo_mode) {
+        console.info("[PHPMailer Demo Mode]:", json.message);
+      }
+    }
+  } catch (err) {
+    console.warn("[PHPMailer] Could not contact send-mail.php:", err);
+  }
+  // Direct client-side webhook fallback if PHP is offline and webhook URL is defined
+  if (!phpContacted && window.RB_SHEET_WEBHOOK_URL) {
+    try {
+      await fetch(window.RB_SHEET_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(entry)
+      });
+      console.info("[GoogleSheets] Lead dispatched directly to Google Apps Script webhook.");
+    } catch (e) {
+      console.warn("[GoogleSheets] Direct webhook error:", e);
+    }
+  }
   return entry;
 }
 
 /* ================= router ================= */
 const app=$("#app");
 function route(){const h=(location.hash||"#home").slice(1)||"home";if(h.startsWith("course-"))return{name:"course",id:h.slice(7)};if(h.startsWith("ws-"))return{name:"workshop",id:h.slice(3)};return{name:h}}
+
+function waMessageForRoute(r){
+  if(!r)r=route();
+  if(r.name==="workshop"){
+    const w=WORKSHOPS.find(x=>x.id===r.id);
+    if(w)return `Hi Rhythmic Beat, I'd like to enquire about the "${w.title}" workshop by ${w.by}.`;
+  }
+  if(r.name==="course"){
+    const c=COURSES.find(o=>o.id===r.id);
+    if(c)return `Hi Rhythmic Beat, I'd like to enquire about the ${c.name} course batches and admission.`;
+  }
+  if(r.name==="workshops")return "Hi Rhythmic Beat, I'd like to know more about your upcoming dance workshops.";
+  if(r.name==="courses")return "Hi Rhythmic Beat, I'd like to know more about your dance courses and book a trial class.";
+  if(r.name==="franchise")return "Hi Rhythmic Beat, I'm interested in franchise opportunities with Rhythmic Beat Dance Court.";
+  if(r.name==="facilitators")return "Hi Rhythmic Beat, I'd like to enquire about your instructors and masterclasses.";
+  if(r.name==="contact")return "Hi Rhythmic Beat, I have an enquiry and would like to speak with someone.";
+  return "Hi Rhythmic Beat, I'd like to know more about your classes and workshops.";
+}
+
+function updateWhatsAppLinks(r){
+  const msg=waMessageForRoute(r);
+  const url="https://wa.me/919655551055?text="+encodeURIComponent(msg);
+  $$(".wa-fab, .cbtn.wa, .mm-quick .wa").forEach(el=>{
+    el.href=url;
+    if(el.classList.contains("wa-fab"))el.title=msg;
+  });
+}
+
 const PAGES={home,about,courses,workshops,facilitators,franchise,gallery,contact,leads,course:courseDetail,workshop:workshopDetail};
 function render(){
   const r=route(); const fn=PAGES[r.name]||home;
@@ -1547,6 +1616,7 @@ function render(){
   fillStrips(); wire(r); closeWpop();
   window.scrollTo(0,0);
   reveal();tlFill(); bnrStart(); if(loaded)runCounters();
+  updateWhatsAppLinks(r);
 }
 window.addEventListener("hashchange",render);
 function fillStrips(){$$("[data-strip]").forEach(t=>{if(!t.childElementCount){const one=STRIP.map(([k,n])=>`<a href="#course-${k}" aria-label="${n}"><img src="${ICON(k)}" alt="${n}"></a>`).join("");t.innerHTML=one+one+one+one}})}
@@ -1946,7 +2016,6 @@ function workshopDetail(r){
     <div class="wd">
       <div style="min-width:0">
         <div class="wdhero">
-          <button class="poster" data-zoom="${w.poster}" aria-label="View full poster"><img src="${w.poster}" alt="${esc(w.title)} poster"></button>
           <div style="display:grid;gap:10px;min-width:0">
             <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="pill bl">${w.kind}</span>${past?'<span class="pill">Completed</span>':`<span class="pill o"><span class="dot"></span>${relDay(w.date)}</span>`}</div>
             <h1><span class="b">${esc(w.title)}</span></h1><span class="by">by ${esc(w.by)}</span>
@@ -1957,6 +2026,9 @@ function workshopDetail(r){
               <div class="fact"><span class="ic o">${I.pin}</span><div><small>Venue</small><b>RB Dance Court, Valasaravakkam</b></div></div>
               ${w.song?`<div class="fact"><span class="ic">${I.music}</span><div><small>Song</small><b>${esc(w.song)}</b></div></div>`:`<div class="fact"><span class="ic">${I.clock}</span><div><small>Duration</small><b>${w.dur}</b></div></div>`}
             </div>
+          </div>
+          <div class="wdhero-poster">
+            <button class="poster" data-zoom="${w.poster}" aria-label="View full poster"><img src="${w.poster}" alt="${esc(w.title)} poster"></button>
           </div>
         </div>
         <div class="block"><h2>About the workshop</h2>${w.about.map(p=>`<p>${esc(p)}</p>`).join("")}</div>
@@ -2146,15 +2218,124 @@ function openBooking(w,tier,qty){
     [["name",v.name.length>1,"Enter the participant's name."],["phone",okPhone(v.phone),"Enter a valid 10-digit mobile number."],["email",okEmail(v.email),"Enter a valid email for your e-ticket."]].forEach(([n,g,msg])=>{const w2=f.querySelector(`[name=${n}]`).closest(".fld");w2.classList.toggle("bad",!g);w2.querySelector(".err").textContent=g?"":msg;if(!g)ok=false});
     const tc=$("#bkTerms",m).checked;$("#bkTermsErr",m).textContent=tc?"":"Please accept the terms to continue.";if(!tc)ok=false;if(!ok)return;
     $("#st2",m).classList.add("on");
-    $("#bkStep",m).innerHTML=`<div class="form"><div class="fld"><span class="lbl">Pay with</span><div class="payopts"><label><input type="radio" name="pm" value="UPI" checked id="pmU"><span>UPI<small>GPay · PhonePe</small></span></label><label><input type="radio" name="pm" value="Card" id="pmC"><span>Card<small>Debit / Credit</small></span></label><label><input type="radio" name="pm" value="Net banking" id="pmN"><span>Net banking<small>All banks</small></span></label></div></div>
-      <p class="note">Website preview: the payment gateway connects here at launch. Tapping pay reserves your slot as “payment pending” and our team confirms by phone.</p>
-      <button class="btn btn-o" id="payNow">Pay ${inr(amount)}</button><button class="btn btn-line" id="payBack" type="button">Back</button></div>`;
+    $("#bkStep",m).innerHTML=`<div class="form">
+      <div class="fld"><span class="lbl">Pay with</span><div class="payopts"><label><input type="radio" name="pm" value="UPI" checked id="pmU"><span>UPI<small>GPay · PhonePe</small></span></label><label><input type="radio" name="pm" value="Card" id="pmC"><span>Card<small>Debit / Credit</small></span></label><label><input type="radio" name="pm" value="Net banking" id="pmN"><span>Net banking<small>All banks</small></span></label></div></div>
+      <p class="note" style="display:flex;align-items:center;gap:8px"><span>🔒</span><span><b>Razorpay Checkout:</b> UPI (GPay, PhonePe), Cards &amp; Net Banking. Tapping pay opens Razorpay to complete your booking.</span></p>
+      <div id="rzpNotice" style="display:none;font-size:.82rem;padding:12px 14px;border-radius:10px;margin-bottom:10px"></div>
+      <button class="btn btn-o" id="payNow" style="width:100%">Pay ${inr(amount)}</button>
+      <button class="btn btn-line" id="payBack" type="button" style="width:100%">Back</button>
+    </div>`;
     $("#payBack",m).onclick=()=>{closeModal();openBooking(w,tier,qty)};
-    $("#payNow",m).onclick=async()=>{const b=$("#payNow",m);b.disabled=true;b.textContent="Reserving…";const pm=m.querySelector('[name=pm]:checked').value;
+    $("#payNow",m).onclick=async()=>{
+      const b=$("#payNow",m), n=$("#rzpNotice",m);
+      b.disabled=true; b.textContent="Opening Razorpay…";
+      if(n)n.style.display="none";
       const ref="RB-"+w.date.slice(5).replace("-","")+"-"+Math.random().toString(36).slice(2,6).toUpperCase();
-      await saveEntry("booking",{...v,workshop:`${w.title} (${w.byShort}) · ${w.date}`,tier:t.label,qty,amount,method:pm,status:"Payment pending",ref,courses:["Workshops"]});
-      store.set("rb_lead_done",true); $("#st3",m).classList.add("on");
-      $("#bkStep",m).innerHTML=doneHTML("Slot reserved",`Booking ref <b style="color:var(--ink);user-select:all">${ref}</b><br>${qty} × ${esc(t.label)} for ${esc(w.title)} on ${longDate(w.date)}, ${w.start}. We'll confirm on ${esc(v.phone)}.`,'<button class="btn btn-o" data-close>Done</button>');
+      const pm=m.querySelector('[name=pm]:checked')?.value||"UPI";
+      try{
+        if(typeof Razorpay==="undefined"){
+          await new Promise((resolve,reject)=>{
+            const s=document.createElement("script");
+            s.src="https://checkout.razorpay.com/v1/checkout.js";
+            s.onload=resolve; s.onerror=()=>reject(new Error("Could not load Razorpay SDK"));
+            document.head.appendChild(s);
+          });
+        }
+        const oRes=await fetch("razorpay-create-order.php",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({amount,receipt:ref,name:v.name,phone:v.phone,email:v.email,notes:{workshop:w.title,date:w.date,tier:t.label,qty,ref,preferred_pm:pm}})
+        });
+        const oData=await oRes.json();
+        if(!oData.success&&!oData.key_id){
+          b.disabled=false; b.textContent="Pay "+inr(amount);
+          if(n){
+            n.style.display="block"; n.style.background="#FFF4EA"; n.style.color="var(--warn)";
+            n.innerHTML=`<b>🔑 Razorpay Keys Required:</b><br>Please enter your Razorpay Key ID and Secret below to open the checkout gateway:<div style="margin-top:10px;display:grid;gap:6px"><input id="quickKid" placeholder="Key ID (e.g. rzp_test_...)" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid #cbd3de;font-size:.82rem"><input id="quickKsec" type="password" placeholder="Key Secret" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid #cbd3de;font-size:.82rem"><button class="btn btn-o btn-sm" id="quickSaveBtn" type="button" style="width:100%">Save &amp; Open Razorpay</button></div>`;
+            $("#quickSaveBtn",n).onclick=async()=>{
+              const kid=$("#quickKid",n).value.trim(), ksec=$("#quickKsec",n).value.trim();
+              if(!kid||!ksec){alert("Please enter both Key ID and Key Secret.");return;}
+              const sRes=await fetch("razorpay-save-keys.php",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({key_id:kid,key_secret:ksec})});
+              const sData=await sRes.json();
+              if(sData.success){toast("Keys saved! Opening Razorpay…");$("#payNow",m).click();}
+              else{alert(sData.error||"Could not save keys");}
+            };
+          }
+          return;
+        }
+        const rzp=new Razorpay({
+          key:oData.key_id,
+          amount:oData.amount,
+          currency:oData.currency||"INR",
+          name:oData.company_name||"Rhythmic Beat Dance Court",
+          description:`${w.title} (${t.label} × ${qty})`,
+          image:oData.company_logo||"img/logo.png",
+          order_id:oData.order_id&&!oData.order_id.startsWith("order_demo_")?oData.order_id:undefined,
+          prefill:{
+            name:v.name,
+            email:v.email,
+            contact:v.phone,
+            method:pm==="UPI"?"upi":pm==="Card"?"card":pm==="Net banking"?"netbanking":undefined
+          },
+          notes:{booking_ref:ref,workshop:w.title,tier:t.label,qty:String(qty)},
+          theme:{color:oData.theme_color||"#0B4EA2"},
+          modal:{
+            ondismiss:()=>{
+              b.disabled=false; b.textContent="Pay "+inr(amount);
+              toast("Payment window closed");
+            }
+          },
+          handler:async resp=>{
+            b.disabled=true; b.textContent="Verifying payment…";
+            try{
+              const vRes=await fetch("razorpay-verify.php",{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({
+                  razorpay_order_id:resp.razorpay_order_id,
+                  razorpay_payment_id:resp.razorpay_payment_id,
+                  razorpay_signature:resp.razorpay_signature,
+                  booking:{name:v.name,phone:v.phone,email:v.email,workshop:`${w.title} (${w.byShort}) · ${w.date}`,tier:t.label,qty,amount,ref,courses:["Workshops"],method:"Razorpay ("+pm+")"}
+                })
+              });
+              const vData=await vRes.json();
+              if(vData.success){
+                await saveEntry("booking",{...v,workshop:`${w.title} (${w.byShort}) · ${w.date}`,tier:t.label,qty,amount,method:"Razorpay ("+pm+")",payment_id:resp.razorpay_payment_id,order_id:resp.razorpay_order_id,status:"Paid & Confirmed",ref,courses:["Workshops"]},{localOnly:true});
+                store.set("rb_lead_done",true); $("#st3",m).classList.add("on");
+                $("#bkStep",m).innerHTML=`
+                  <div class="done" style="text-align:center">
+                    <span class="okc" style="background:#17905A;color:#fff;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;margin:0 auto 16px">${I.check}</span>
+                    <h2 style="font-size:1.75rem;text-transform:uppercase;color:var(--blue);margin-bottom:6px">Payment Successful!</h2>
+                    <p style="font-weight:700;color:var(--orange);font-size:1.02rem;margin-bottom:14px">Your workshop slot is confirmed 🎉</p>
+                    <div class="card" style="text-align:left;background:var(--soft);padding:16px 20px;margin-bottom:18px;font-size:.85rem;display:grid;gap:8px">
+                      <div style="display:flex;justify-content:space-between"><span>Booking Ref:</span><b style="font-family:monospace;user-select:all;color:var(--blue)">${ref}</b></div>
+                      <div style="display:flex;justify-content:space-between"><span>Payment ID:</span><b style="font-family:monospace;user-select:all">${resp.razorpay_payment_id}</b></div>
+                      <div style="display:flex;justify-content:space-between"><span>Workshop:</span><b>${esc(w.title)}</b></div>
+                      <div style="display:flex;justify-content:space-between"><span>Pass:</span><span>${qty} × ${esc(t.label)}</span></div>
+                      <div style="display:flex;justify-content:space-between;border-top:1px dashed #cbd3de;padding-top:6px;font-weight:800"><span>Total Paid:</span><span style="color:var(--orange)">${inr(amount)}</span></div>
+                    </div>
+                    <p class="muted" style="max-width:44ch;margin:0 auto 18px;font-size:.85rem">An e-ticket with your payment confirmation has been sent to <b>${esc(v.email)}</b>. Show this reference at the reception desk.</p>
+                    <button class="btn btn-o" data-close>Done &amp; explore more</button>
+                  </div>`;
+              }else{
+                b.disabled=false; b.textContent="Pay "+inr(amount);
+                alert("Payment verification issue: "+(vData.error||"Please contact RB team with Payment ID "+resp.razorpay_payment_id));
+              }
+            }catch(e){
+              b.disabled=false; b.textContent="Pay "+inr(amount);
+              alert("Network issue verifying payment. If amount was debited, contact "+PHONE+" with Payment ID "+resp.razorpay_payment_id);
+            }
+          }
+        });
+        rzp.on("payment.failed",function(resp){
+          b.disabled=false; b.textContent="Pay "+inr(amount);
+          if(n){n.style.display="block";n.style.background="#FDE8E8";n.style.color="var(--warn)";n.textContent="Payment failed: "+(resp.error?.description||"Transaction cancelled.");}
+        });
+        rzp.open();
+      }catch(err){
+        b.disabled=false; b.textContent="Pay "+inr(amount);
+        if(n){n.style.display="block";n.style.background="#FDE8E8";n.style.color="var(--warn)";n.textContent="Error initializing payment: "+err.message;}
+      }
     };
   });
 }
@@ -2194,6 +2375,8 @@ function wire(r){
     $("#payBtn").onclick=()=>openBooking(w,$('[name=tier]:checked').value,q);}}
 }
 document.addEventListener("click",e=>{
+  const wa=e.target.closest(".wa-fab, .cbtn.wa, .mm-quick .wa");
+  if(wa){wa.href="https://wa.me/919655551055?text="+encodeURIComponent(waMessageForRoute());}
   const sd=e.target.closest("[data-snd]"); if(sd){const v=sd.parentElement.querySelector("video");v.muted=!v.muted;if(!v.muted)v.play();sd.classList.toggle("on",!v.muted);return}
   const sg=e.target.closest("[data-strip-go]"); if(sg){const st=$(".cstrip");if(st)st.scrollBy({left:(+sg.dataset.stripGo)*Math.min(st.clientWidth*.8,700),behavior:"smooth"});return}
   const en=e.target.closest("[data-enquire]"); if(en){e.preventDefault();const c=en.dataset.course;const isW=c&&c.startsWith("Workshop");
