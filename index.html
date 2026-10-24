@@ -396,6 +396,28 @@ tbody tr:last-child td{border-bottom:0}
 @media (max-width:760px){.wdhero{grid-template-columns:1fr}.wdhero-poster{order:-1;margin-bottom:12px}.wdhero .poster{max-width:300px}}
 @media (max-width:640px){.facts{grid-template-columns:1fr}.person{grid-template-columns:90px minmax(0,1fr)}.person img{width:90px;height:110px}}
 
+/* Special workshop banners and sessions */
+.wpartner-banner{display:flex;align-items:center;gap:12px;background:#FFF6EB;border:1.5px solid #FFD9B5;border-radius:14px;padding:12px 16px;margin-bottom:24px;flex-wrap:wrap}
+.wpartner-badge{background:var(--orange);color:#fff;font-size:.7rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:999px}
+.wpartner-banner p{font-size:.88rem;color:#4A321B;margin:0}
+.ws-sess-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:14px}
+.ws-sess-card{background:var(--sbg,#fbfcfd);border:1.5px solid var(--sbrd,#e2e8f0);border-radius:18px;padding:20px;display:grid;gap:12px;transition:transform .2s ease,box-shadow .2s ease}
+.ws-sess-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.ws-sess-top{display:flex;justify-content:space-between;align-items:center;font-size:.76rem;font-weight:800}
+.ws-sess-num{color:var(--sc);text-transform:uppercase;letter-spacing:.1em}
+.ws-sess-time{display:flex;align-items:center;gap:5px;color:var(--muted)}
+.ws-sess-time svg{width:14px;height:14px}
+.ws-sess-song{display:flex;align-items:center;gap:10px}
+.ws-sess-icon{width:36px;height:36px;border-radius:10px;background:#fff;display:grid;place-items:center;color:var(--sc);box-shadow:0 2px 6px rgba(0,0,0,.08);flex-shrink:0}
+.ws-sess-icon svg{width:18px;height:18px}
+.ws-sess-song h3{font-size:1.25rem;font-weight:800;color:var(--sc);margin:0}
+.ws-sess-card p{font-size:.88rem;color:#334155;line-height:1.45;margin:0}
+.ws-sess-foot{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px dashed var(--sbrd);margin-top:4px}
+.ws-sess-price{font-size:.84rem;color:#475569}
+.ws-sess-price b{color:var(--ink);font-size:1.05rem}
+.ws-combo-banner{display:flex;justify-content:space-between;align-items:center;gap:14px;background:linear-gradient(135deg,#FFF9EE 0%,#FFF1D6 100%);border:1.5px solid #F6D695;border-radius:16px;padding:16px 20px;margin-top:16px;flex-wrap:wrap}
+.ws-combo-icon{font-size:1.8rem;line-height:1}
+
 /* facilitators */
 .fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px}
 .fac{background:#fff;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;text-decoration:none;color:inherit}
@@ -1010,9 +1032,9 @@ footer{background:var(--soft);border-top:1px solid var(--line)}
 .alerts b{font-size:.84rem;display:block}.alerts small{font-size:.72rem;color:var(--orange);font-weight:700}
 
 /* ===== v3: map cards ===== */
-.loc{padding:0;overflow:hidden}
-.loc .lbody{padding:18px 20px 20px;display:grid;gap:8px}
-.mapviz{position:relative;height:150px;background:#EAF0F6;overflow:hidden;display:block;text-decoration:none}
+.loc{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.loc .lbody{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.mapviz{position:relative;height:150px;background:#EAF0F6;overflow:hidden;display:block;text-decoration:none;flex-shrink:0}
 .mapviz .streets{position:absolute;inset:-40%;background:
  repeating-linear-gradient(0deg,transparent 0 34px,#fff 34px 40px),
  repeating-linear-gradient(90deg,transparent 0 52px,#fff 52px 58px);transform:rotate(var(--rot,-12deg))}
@@ -1028,7 +1050,16 @@ footer{background:var(--soft);border-top:1px solid var(--line)}
 .mapviz .open svg{width:13px;height:13px}
 .loc.hq .mapviz .pin{background:var(--blue)}
 .loc.soon .mapviz{background:repeating-linear-gradient(45deg,#F6F8FB 0 12px,#EEF2F7 12px 24px);display:grid;place-items:center;color:var(--orange);font-size:3rem;font-weight:300}
-.loc .lnk{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.loc-vis{display:flex;flex-direction:column;gap:8px;margin-top:4px;padding-top:10px;border-top:1px solid var(--line)}
+.loc-vis a.loc-loc{display:flex;gap:8px;align-items:flex-start;font-size:.82rem;line-height:1.4;color:var(--muted);text-decoration:none;transition:color .2s ease}
+.loc-vis a.loc-loc svg{width:15px;height:15px;color:var(--orange);margin-top:2px;flex-shrink:0}
+.loc-vis a.loc-loc:hover{color:var(--blue)}
+.loc-vis a.loc-wa{display:inline-flex;gap:7px;align-items:center;font-size:.82rem;color:var(--muted);text-decoration:none;transition:all .2s ease;padding:1px 0}
+.loc-vis a.loc-wa svg{width:15px;height:15px;color:#25D366;flex-shrink:0}
+.loc-vis a.loc-wa .wa-num{color:var(--ink);font-weight:700}
+.loc-vis a.loc-wa:hover{color:#128C4B}
+.loc-vis a.loc-wa:hover .wa-num{color:#128C4B;text-decoration:underline}
+.loc .lnk{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:auto;padding-top:10px}
 
 /* ===== v3: timeline ===== */
 .tl{position:relative;display:grid;gap:26px;padding-block:10px}
@@ -1057,8 +1088,15 @@ footer{background:var(--soft);border-top:1px solid var(--line)}
 footer{background:#fff;border-top:0;position:relative;isolation:isolate;overflow:hidden}
 .fwm{position:absolute;left:50%;bottom:64px;translate:-50% 0;z-index:-1;font-size:clamp(3rem,11vw,9.5rem);font-weight:900;letter-spacing:-.04em;white-space:nowrap;color:transparent;-webkit-text-stroke:1.5px #E3E9F1;text-transform:uppercase;pointer-events:none;line-height:1}
 .foot{grid-template-columns:1.4fr 1fr 1fr 1.3fr;padding-block:56px 120px}
-.foot .vis a{display:flex;gap:8px;align-items:flex-start}
-.foot .vis a svg{width:16px;height:16px;color:var(--orange);margin-top:3px;flex-shrink:0}
+.foot .vis{display:flex;flex-direction:column;gap:14px}
+.foot .vis .vis-item{display:flex;flex-direction:column;gap:3px}
+.foot .vis a.vis-loc{display:flex;gap:8px;align-items:flex-start}
+.foot .vis a.vis-loc svg{width:16px;height:16px;color:var(--orange);margin-top:3px;flex-shrink:0}
+.foot .vis a.vis-wa{display:inline-flex;gap:6px;align-items:center;margin-left:24px;font-size:.85rem;color:var(--muted);text-decoration:none;transition:all .2s ease;padding:2px 0}
+.foot .vis a.vis-wa svg{width:14px;height:14px;color:#25D366;flex-shrink:0;margin-top:0}
+.foot .vis a.vis-wa .wa-num{color:var(--ink);font-weight:700}
+.foot .vis a.vis-wa:hover{color:#128C4B}
+.foot .vis a.vis-wa:hover .wa-num{color:#128C4B;text-decoration:underline}
 .cbtns{display:flex;gap:8px;flex-wrap:wrap}
 .cbtn{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:12px;background:var(--soft);text-decoration:none;font-weight:700;font-size:.84rem;color:var(--ink);border:0}
 .cbtn svg{width:16px;height:16px}
@@ -1263,9 +1301,18 @@ html.mm-lock,html.mm-lock body{overflow:hidden}
     <div><h4>Explore</h4><a href="#about">About Us</a><a href="#courses">Courses</a><a href="#workshops">Workshops</a><a href="#facilitators">Our Facilitators</a><a href="#gallery">Gallery</a><a href="#franchise">Franchise</a><a href="#leads" id="leadsLink" hidden>Enquiries inbox</a></div>
     <div><h4>Courses</h4><a href="#course-western">Western Dance</a><a href="#course-bharatanatyam">Bharatanatyam</a><a href="#course-zumba">Zumba</a><a href="#course-aerial">Aerial Yoga</a><a href="#course-gymnastics">Gymnastics</a><a href="#course-kalari">Kalaripayattu</a></div>
     <div class="vis"><h4>Visit us</h4>
-      <a href="https://www.google.com/maps/search/?api=1&query=Rhythmic%20Beat%20Dance%20Court%2C%20116A%20Chowdry%20Nagar%20Main%20Rd%2C%20Valasaravakkam%2C%20Chennai%20600087" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b style="color:var(--ink)">Valasaravakkam (HQ)</b><br>116A, Chowdry Nagar Main Rd, Chennai 600087</span></a>
-      <a href="https://www.google.com/maps/search/?api=1&query=Rhythmic%20Beat%20Dance%20Court%2C%20Kolapakkam%2C%20Chennai" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b style="color:var(--ink)">Kolapakkam</b></span></a>
-      <a href="https://www.google.com/maps/search/?api=1&query=Rhythmic%20Beat%20Dance%20Court%2C%20Ambattur%2C%20Chennai" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b style="color:var(--ink)">Ambattur</b></span></a>
+      <div class="vis-item">
+        <a class="vis-loc" href="https://www.google.com/maps/search/?api=1&query=Rhythmic%20Beat%20Dance%20Court%2C%20116A%20Chowdry%20Nagar%20Main%20Rd%2C%20Valasaravakkam%2C%20Chennai%20600087" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b style="color:var(--ink)">Valasaravakkam (HQ)</b><br>116A, Chowdry Nagar Main Rd, Chennai 600087</span></a>
+        <a class="vis-wa" href="https://wa.me/919655551055?text=Hi%20Rhythmic%20Beat%2C%20I%27d%20like%20to%20know%20more%20about%20your%20classes%20at%20Valasaravakkam." target="_blank" rel="noopener" aria-label="WhatsApp Valasaravakkam branch"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.7l-.4-.2-3.8 1.2 1.2-3.7-.3-.4a10.5 10.5 0 0 1-1.6-5.8C5.2 10 10 5.3 16 5.3S26.8 10 26.8 15.8 22 26.4 16 26.4zm5.9-7.9c-.3-.2-1.9-1-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.2 1.3 3.4c.2.2 2.3 3.5 5.6 4.9 2.8 1.1 3.3.9 3.9.8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg><span>Contact: <span class="wa-num">+91 96555 51055</span></span></a>
+      </div>
+      <div class="vis-item">
+        <a class="vis-loc" href="https://www.google.com/maps/search/?api=1&query=Rhythmic%20Beat%20Dance%20Court%2C%20Kolapakkam%2C%20Chennai" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b style="color:var(--ink)">Kolapakkam</b><br>No. 03, Anna Salai, Padmavathi Nagar, Kolapakkam, Chennai – 600128</span></a>
+        <a class="vis-wa" href="https://wa.me/919500032790?text=Hi%20Rhythmic%20Beat%2C%20I%27d%20like%20to%20know%20more%20about%20your%20classes%20at%20Kolapakkam." target="_blank" rel="noopener" aria-label="WhatsApp Kolapakkam branch"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.7l-.4-.2-3.8 1.2 1.2-3.7-.3-.4a10.5 10.5 0 0 1-1.6-5.8C5.2 10 10 5.3 16 5.3S26.8 10 26.8 15.8 22 26.4 16 26.4zm5.9-7.9c-.3-.2-1.9-1-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.2 1.3 3.4c.2.2 2.3 3.5 5.6 4.9 2.8 1.1 3.3.9 3.9.8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg><span>Contact: <span class="wa-num">+91 9500032790</span></span></a>
+      </div>
+      <div class="vis-item">
+        <a class="vis-loc" href="https://www.google.com/maps/search/?api=1&query=Rhythmic%20Beat%20Dance%20Court%2C%20Ambattur%2C%20Chennai" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span><b style="color:var(--ink)">Ambattur</b><br>73, 18th Ave, Banu Nagar, Chennai, Tamil Nadu 600053</span></a>
+        <a class="vis-wa" href="https://wa.me/919966126125?text=Hi%20Rhythmic%20Beat%2C%20I%27d%20like%20to%20know%20more%20about%20your%20classes%20at%20Ambattur." target="_blank" rel="noopener" aria-label="WhatsApp Ambattur branch"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.7l-.4-.2-3.8 1.2 1.2-3.7-.3-.4a10.5 10.5 0 0 1-1.6-5.8C5.2 10 10 5.3 16 5.3S26.8 10 26.8 15.8 22 26.4 16 26.4zm5.9-7.9c-.3-.2-1.9-1-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.2 1.3 3.4c.2.2 2.3 3.5 5.6 4.9 2.8 1.1 3.3.9 3.9.8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg><span>Contact: <span class="wa-num">+91 9966126125</span></span></a>
+      </div>
     </div>
   </div>
   <div class="fwm" aria-hidden="true">Let ur body speak</div>
@@ -1287,9 +1334,9 @@ html.mm-lock,html.mm-lock body{overflow:hidden}
 const PHONE="+91 96555 51055", PHONE_TEL="+919655551055";
 const ADDRESS="116A, Chowdry Nagar Main Rd, Valasaravakkam, Chennai 600087";
 const LOCATIONS=[
-  {id:"valasaravakkam",name:"Valasaravakkam",tag:"Flagship · HQ",desc:"Three courts, online studio and all programmes. "+ADDRESS+".",hq:true},
-  {id:"kolapakkam",name:"Kolapakkam",tag:"Dance Court",desc:"Neighbourhood court for kids, juniors and fitness batches."},
-  {id:"ambattur",name:"Ambattur",tag:"Dance Court",desc:"Western dance, Zumba and holistic fitness for the west side."},
+  {id:"valasaravakkam",name:"Valasaravakkam",tag:"Flagship · HQ",desc:"Three courts, online studio and all programmes.",addr:ADDRESS,phone:"+91 96555 51055",wa:"919655551055",hq:true},
+  {id:"kolapakkam",name:"Kolapakkam",tag:"Dance Court",desc:"Neighbourhood court for kids, juniors and fitness batches.",addr:"No. 03, Anna Salai, Padmavathi Nagar, Kolapakkam, Chennai – 600128",phone:"+91 9500032790",wa:"919500032790"},
+  {id:"ambattur",name:"Ambattur",tag:"Dance Court",desc:"Western dance, Zumba and holistic fitness for the west side.",addr:"73, 18th Ave, Banu Nagar, Chennai, Tamil Nadu 600053",phone:"+91 9966126125",wa:"919966126125"},
   {id:"new",name:"New courts",tag:"Opening soon",desc:"Three more courts are on the way. Tell us your area and we'll let you know first.",soon:true}
 ];
 const ICON=k=>`img/icon-${k}.png`;
@@ -1464,10 +1511,42 @@ const WORKSHOPS=[
   ],
   forWho:"Dancers aged 12+, teens and adults of all skill levels passionate about semi-classical dance and nuanced expression.",
   bring:["Traditional or comfortable dance wear (Kurti, Kurta or practice wear)","Barefoot or grip socks","Water bottle and towel"],
-  bio:"Founder & Artistic Director of Rhythmic Beat Dance Court, Master Yuvraaj Jayakumar is a renowned choreographer with over 20+ years of stage and teaching mastery blending classical depth with contemporary storytelling."}
-
+  bio:"Founder & Artistic Director of Rhythmic Beat Dance Court, Master Yuvraaj Jayakumar is a renowned choreographer with over 20+ years of stage and teaching mastery blending classical depth with contemporary storytelling."},
+  {id:"wos-diwali-expo",title:"WOS Diwali Expo Dance Workshop",kind:"Semi-Classical",date:"2026-10-24",start:"11:00 AM",end:"4:00 PM",dur:"2 sessions · 4 hours",
+   poster:"img/wos-diwali-expo.jpeg",photo:"img/wos-diwali-expo.jpeg",by:"Master Yuvraaj Jaykumar",byShort:"Master Yuvraaj",role:"Founder & Master Choreographer",
+   venue:"wos expo @ Radha Regent",partner:"WOS (Women of Success) & BNI Chennai CBD A",song:"Pesamale & Kanaa Kaangiren",
+   tagline:"Learn the hook. Nail the expression. Two soulful songs. One immersive experience.",
+   limitedSeats:true,
+   tierType:"session",
+   tiers:[
+     {k:"both",label:"Both Sessions Pass (Full Day)",note:"Pesamale + Kanaa Kaangiren (11 AM – 4 PM) · Save ₹400",amt:2000},
+     {k:"pesamale",label:"Single Session: Pesamale",note:"11:00 AM – 1:00 PM · Hook & Expression",amt:1200},
+     {k:"kanaa",label:"Single Session: Kanaa Kaangiren",note:"2:00 PM – 4:00 PM · Abhinaya & Flow",amt:1200}
+   ],
+   sessions:[
+     {num:"Session 1",song:"Pesamale",time:"11:00 AM – 1:00 PM",color:"#8B1834",bg:"#FDF2F4",border:"#F3C5CE",badge:"Morning Session",desc:"Learn the iconic hook step and dive deep into nuanced romantic expressions, drishti (eye focus), and lyrical abhinaya for this soulful melody."},
+     {num:"Session 2",song:"Kanaa Kaangiren",time:"2:00 PM – 4:00 PM",color:"#0F5144",bg:"#EFF8F5",border:"#BCE3D8",badge:"Afternoon Session",desc:"Explore emotional longing, dramatic postural transitions, expressive mudras, and fluid cinematic footwork taught count by count."}
+   ],
+   about:[
+     "Celebrate Diwali with an extraordinary dance masterclass! Presented at the prestigious WOS (Women of Success) Diwali Expo in association with BNI Chennai CBD A, Master Yuvraaj Jaykumar invites dancers to an exclusive, immersive semi-classical workshop.",
+     "Themed 'Learn the hook. Nail the expression. Two soulful songs. One immersive experience.', this masterclass delves into two of Tamil cinema's most emotive, poetic compositions: 'Pesamale' and 'Kanaa Kaangiren'.",
+     "Session 1 (11:00 AM – 1:00 PM) centers on 'Pesamale', exploring tender romantic nuances, gentle body flow, and signature hook steps. Session 2 (2:00 PM – 4:00 PM) unlocks 'Kanaa Kaangiren', bringing out poignant abhinaya, dramatic eye expressions, and lyrical dynamics.",
+     "Dancers can choose a Single Session Pass for ₹1,200 (any one song) or the Full Day Pass for ₹2,000 covering both masterclasses. Limited seats are available to ensure individual guidance and camera feedback from Master Yuvraaj—hurry up and book your pass today!"
+   ],
+   learn:[
+     "Count-by-count choreography for 'Pesamale' & 'Kanaa Kaangiren'",
+     "Nailing the signature hook steps and musical timing",
+     "Mastering abhinaya (facial expressions) and emotional depth for camera and stage",
+     "Hand mudras, body postures, and seamless transitions",
+     "Tips for reel-worthy presentation, drishti (eye focus), and storytelling",
+     "Final camera-ready choreography shoot and group performance video"
+   ],
+   forWho:"Open to all dancers aged 12+, teens, adults, beginners, and seasoned dancers passionate about semi-classical expression and soulful choreography.",
+   bring:["Festive ethnic or comfortable dance wear (Kurti, Kurta, or practice wear)","Barefoot or clean indoor grip socks","Water bottle and towel","Festive energy and excitement!"],
+   bio:"Founder & Artistic Director of Rhythmic Beat Dance Court, Master Yuvraaj Jaykumar is a celebrated choreographer with over 20+ years of stage and teaching mastery, known across Tamil Nadu for his viral choreography videos, masterclasses, and distinctive blend of classical soul with contemporary expression."}
 ];
 const GALLERY=[
+ ["img/wos-diwali-expo.jpeg","Workshops","WOS Diwali Expo Dance Workshop"],
  ["img/kalyan-master.jpg","Events","Welcoming Kalyan Master"],["img/stage-warriors.jpg","Events","Stage production"],["img/stage-certs.jpg","Events","Students honoured on stage"],["img/summerfest-cert.jpg","Events","Summer Fest certificates"],["img/founders.jpg","Founders","Master Yuvraaj & Gayatri Yuvraj"],["img/semi-duet-pink.jpg","Semi-Classical","Semi-classical duet"],["img/semi-duet-mauve.jpg","Semi-Classical","Semi-classical routine"],["img/studio-trio.jpg","Semi-Classical","Semi-classical workshop"],["img/western-duet.jpg","Western","Western choreography"],["img/master-hug.jpg","Events","After the show"],["img/ambattur-crew.jpg","Studio","The Ambattur crew"],["img/group-dance.jpg","Workshops","Workshop day"],["img/cert-girl.jpg","Kids","Certificate day"],["img/devotional.jpg","Events","Devotional shoot"],["img/expo-family.jpg","Events","At the expo"],
  ["img/stage.jpg","Events","Summer showcase on stage"],["img/aerial.jpg","Aerial Yoga","Aerial yoga, Court 3"],["img/bharatanatyam.jpg","Classical","Bharatanatyam batch"],
  ["img/kids.jpg","Kids","Kids western batch"],["img/gymnastics.jpg","Gymnastics","Gymnastics practice"],["img/yoga.jpg","Yoga","Partner yoga balance"],
@@ -1520,7 +1599,8 @@ const I={
  heart:sv('<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>'),
  filter:sv('<path d="M3 5h18M6 12h12M10 19h4"/>'),
  shield:sv('<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/>'),
- video:sv('<rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/>')
+ video:sv('<rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/>'),
+ wa:'<svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.7l-.4-.2-3.8 1.2 1.2-3.7-.3-.4a10.5 10.5 0 0 1-1.6-5.8C5.2 10 10 5.3 16 5.3S26.8 10 26.8 15.8 22 26.4 16 26.4zm5.9-7.9c-.3-.2-1.9-1-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.2-.2-.3 0-.5.1-.7l.5-.6.3-.5c.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.7s1.2 3.2 1.3 3.4c.2.2 2.3 3.5 5.6 4.9 2.8 1.1 3.3.9 3.9.8.6-.1 1.9-.8 2.2-1.5.3-.8.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>'
 };
 
 /* ================= google sheets sync & lead storage ================= */
@@ -1627,11 +1707,13 @@ const upcoming=()=>WORKSHOPS.filter(w=>daysTo(w.date)>=0).sort((a,b)=>a.date.loc
 function wcard(w,i=0){
   const n=daysTo(w.date), d=pd(w.date), lo=Math.min(...w.tiers.map(t=>t.amt)), hi=Math.max(...w.tiers.map(t=>t.amt));
   const st=n<0?'<span class="pill w">Completed</span>':n<=7?`<span class="pill o"><span class="dot"></span>${relDay(w.date)}</span>`:'<span class="pill g" style="background:#fff"><span class="dot"></span>Booking open</span>';
+  const prLabel=w.tierType==="session"?"Pass from":(w.tiers.length>1?"Early bird":"Entry");
+  const prExtra=w.tierType==="session"?`<span style="font-size:.76rem;color:var(--muted);font-weight:600;margin-left:4px">/ session</span>`:(hi>lo?`<s>${inr(hi)}</s>`:"");
   return `<a class="wcard" href="#ws-${w.id}">
     <div class="wpost"><img src="${w.poster}" alt="${esc(w.title)} by ${esc(w.by)}" loading="lazy"><div class="dchip"><b>${d.getDate()}</b><span>${MON[d.getMonth()]}</span></div><span class="stat">${st}</span></div>
     <div class="wbody"><span class="by">${w.kind} · ${esc(w.byShort)}</span><h3>${esc(w.title)}</h3>
       <div class="wmeta"><span>${I.cal}${shortDate(w.date)}</span><span>${I.clock}${w.start}</span>${w.song&&!w.song.startsWith("Announced")?`<span>${I.music}${esc(w.song)}</span>`:""}</div>
-      <div class="wfoot"><div class="price"><small>${w.tiers.length>1?"Early bird":"Entry"}</small><b>${inr(lo)}</b>${hi>lo?`<s>${inr(hi)}</s>`:""}</div><span class="arrowbtn">${I.arrowUp}</span></div></div></a>`;
+      <div class="wfoot"><div class="price"><small>${prLabel}</small><b>${inr(lo)}</b>${prExtra}</div><span class="arrowbtn">${I.arrowUp}</span></div></div></a>`;
 }
 function ccard(c){
   const tile=!c.img;
@@ -1666,7 +1748,11 @@ function locsHTML(){
   const V=[["-12deg","8deg","12%","12%"],["18deg","-6deg","62%","58%"],["-28deg","14deg","10%","60%"],["0","0","0","0"]];
   return `<div class="locs">${LOCATIONS.map((l,i)=>{const v=V[i];
     const map=l.soon?`<div class="mapviz" aria-hidden="true">+</div>`:`<a class="mapviz" href="${mapUrl(l.id)}" target="_blank" rel="noopener" aria-label="Open ${l.name} in Google Maps" style="--rot:${v[0]};--rot2:${v[1]};--px:${v[2]};--py:${v[3]}"><span class="streets"></span><span class="main"></span><span class="park"></span><span class="water"></span><span class="pulse"></span><span class="pin" style="animation-delay:${.2+i*.15}s"></span><span class="open">${I.pin}Google Maps</span></a>`;
-    return `<div class="loc ${l.hq?"hq":""} ${l.soon?"soon":""}">${map}<div class="lbody"><span class="tg">${l.tag}</span><h3 class="${l.hq?"b":""}">${l.name}</h3><p>${esc(l.desc)}</p><div class="lnk"><button class="btn btn-sm ${l.hq?"btn-b":"btn-line"}" data-enquire ${l.soon?"":`data-loc="${l.id}"`}>${l.soon?"Notify me":"Enquire here"}</button>${l.soon?"":`<a class="link" href="${mapUrl(l.id)}" target="_blank" rel="noopener">Directions ${I.arrow}</a>`}</div></div></div>`}).join("")}</div>`;
+    const contactBlock=l.addr?`<div class="loc-vis">
+      <a class="loc-loc" href="${mapUrl(l.id)}" target="_blank" rel="noopener" aria-label="Open ${l.name} on Google Maps">${I.pin}<span>${esc(l.addr)}</span></a>
+      <a class="loc-wa" href="https://wa.me/${l.wa}?text=${encodeURIComponent("Hi Rhythmic Beat, I'd like to know more about your classes at "+l.name+".")}" target="_blank" rel="noopener" aria-label="WhatsApp ${l.name} branch">${I.wa}<span>Contact: <span class="wa-num">${l.phone}</span></span></a>
+    </div>`:"";
+    return `<div class="loc ${l.hq?"hq":""} ${l.soon?"soon":""}">${map}<div class="lbody"><span class="tg">${l.tag}</span><h3 class="${l.hq?"b":""}">${l.name}</h3><p>${esc(l.desc)}</p>${contactBlock}<div class="lnk"><button class="btn btn-sm ${l.hq?"btn-b":"btn-line"}" data-enquire ${l.soon?"":`data-loc="${l.id}"`}>${l.soon?"Notify me":"Enquire here"}</button>${l.soon?"":`<a class="link" href="${mapUrl(l.id)}" target="_blank" rel="noopener">Directions ${I.arrow}</a>`}</div></div></div>`}).join("")}</div>`;
 }
 
 function smartHTML(){
@@ -1908,7 +1994,7 @@ function mmClose(){const el=$("#mm");if(!el)return;el.classList.remove("open");d
 /* ---------- workshops with filters ---------- */
 const WF={when:"upcoming",kinds:[],inst:[],price:[],tod:[],q:"",date:null,sort:"date"};
 const WHEN=[["upcoming","All upcoming"],["week","This week"],["next","Next week"],["month","This month"],["nextmonth","Next month"],["past","Past workshops"]];
-const PRICE=[["early","Early bird under ₹700",w=>Math.min(...w.tiers.map(t=>t.amt))<700],["upto800","Up to ₹800",w=>Math.min(...w.tiers.map(t=>t.amt))<=800]];
+const PRICE=[["early","Early bird under ₹700",w=>Math.min(...w.tiers.map(t=>t.amt))<700],["upto800","Up to ₹800",w=>Math.min(...w.tiers.map(t=>t.amt))<=800],["above1000","₹1,000 & above",w=>Math.max(...w.tiers.map(t=>t.amt))>=1000]];
 const TOD=[["morning","Morning",w=>hour(w.start)<12],["afternoon","Afternoon",w=>hour(w.start)>=12&&hour(w.start)<17],["evening","Evening",w=>hour(w.start)>=17]];
 function inWhen(w,k){
   const n=daysTo(w.date), d=pd(w.date), t=today();
@@ -2023,7 +2109,7 @@ function workshopDetail(r){
             <div class="facts">
               <div class="fact"><span class="ic">${I.cal}</span><div><small>Date</small><b>${longDate(w.date)}</b></div></div>
               <div class="fact"><span class="ic o">${I.clock}</span><div><small>Time</small><b>${w.start} – ${w.end}</b></div></div>
-              <div class="fact"><span class="ic o">${I.pin}</span><div><small>Venue</small><b>RB Dance Court, Valasaravakkam</b></div></div>
+              <div class="fact"><span class="ic o">${I.pin}</span><div><small>Venue</small><b>${esc(w.venue||"RB Dance Court, Valasaravakkam")}</b></div></div>
               ${w.song?`<div class="fact"><span class="ic">${I.music}</span><div><small>Song</small><b>${esc(w.song)}</b></div></div>`:`<div class="fact"><span class="ic">${I.clock}</span><div><small>Duration</small><b>${w.dur}</b></div></div>`}
             </div>
           </div>
@@ -2031,10 +2117,29 @@ function workshopDetail(r){
             <button class="poster" data-zoom="${w.poster}" aria-label="View full poster"><img src="${w.poster}" alt="${esc(w.title)} poster"></button>
           </div>
         </div>
+        ${w.partner?`<div class="wpartner-banner"><span class="wpartner-badge">Special Collaboration</span><p>Presented in association with <b>${esc(w.partner)}</b></p></div>`:""}
+        ${w.sessions?`<div class="block"><h2>Two Soulful Song Sessions</h2>
+          <div class="ws-sess-grid">
+            ${w.sessions.map(s=>`
+              <div class="ws-sess-card" style="--sc:${s.color};--sbg:${s.bg};--sbrd:${s.border}">
+                <div class="ws-sess-top"><span class="ws-sess-num">${esc(s.num)}</span><span class="ws-sess-time">${I.clock}${esc(s.time)}</span></div>
+                <div class="ws-sess-song"><span class="ws-sess-icon">${I.music}</span><h3>${esc(s.song)}</h3></div>
+                <p>${esc(s.desc)}</p>
+                <div class="ws-sess-foot"><span class="ws-sess-price">Single Session: <b>₹1,200</b></span><span class="pill" style="background:var(--sbg);color:var(--sc);border:1px solid var(--sbrd)">${esc(s.badge)}</span></div>
+              </div>`).join("")}
+          </div>
+          <div class="ws-combo-banner">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <span class="ws-combo-icon">🎉</span>
+              <div><b>Full Day Pass — Both Sessions: ₹2,000</b><p class="small" style="color:#503417;margin:0">Attend both Pesamale &amp; Kanaa Kaangiren back-to-back and save ₹400!</p></div>
+            </div>
+            <span class="pill o" style="white-space:nowrap">Best Value</span>
+          </div>
+        </div>`:""}
         <div class="block"><h2>About the workshop</h2>${w.about.map(p=>`<p>${esc(p)}</p>`).join("")}</div>
         <div class="block"><h2>What you'll learn</h2><ul class="ticks cols">${w.learn.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></div>
         <div class="block split" style="gap:28px;align-items:start"><div><h2>Who should attend</h2><p class="muted">${esc(w.forWho)}</p></div><div><h2>What to bring</h2><ul class="ticks">${w.bring.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></div></div>
-        <div class="block"><h2>Your instructor</h2><div class="person"><img src="${w.photo}" alt="${esc(w.by)}"><div style="display:grid;gap:6px;min-width:0"><span class="pill bl" style="justify-self:start">${w.kind==="Wellness"?"Facilitator":"Guest choreographer"}</span><h3 class="b">${esc(w.by)}</h3><p class="muted">${esc(w.bio)}</p></div></div></div>
+        <div class="block"><h2>Your instructor</h2><div class="person"><img src="${w.photo}" alt="${esc(w.by)}"><div style="display:grid;gap:6px;min-width:0"><span class="pill bl" style="justify-self:start">${esc(w.role||(w.kind==="Wellness"?"Facilitator":"Guest choreographer"))}</span><h3 class="b">${esc(w.by)}</h3><p class="muted">${esc(w.bio)}</p></div></div></div>
         <div class="block"><h2>Venue & organiser</h2>
           <div class="org"><img src="img/logo.png" alt="Rhythmic Beat Dance Court"><div style="min-width:0;flex:1"><b>Organised by Rhythmic Beat Dance Court</b><p class="small">Yuvraaj's Dance School · ${ADDRESS}</p></div></div>
           <div class="facts" style="margin-top:10px"><div class="fact"><span class="ic">${I.home}</span><div><small>Facilities</small><b>Wooden floor · Full AC · 5.1 sound</b></div></div><div class="fact"><span class="ic o">${I.users}</span><div><small>Questions</small><b>${PHONE}</b></div></div></div></div>
@@ -2043,7 +2148,7 @@ function workshopDetail(r){
         <div class="block"><h2>Terms & conditions</h2><ol class="terms">${WS_TERMS.map(t=>`<li>${t}</li>`).join("")}</ol></div>
       </div>
       <aside class="book" aria-label="Reserve your slot">
-        <div class="book-h"><small>${d.getDate()} ${MON[d.getMonth()]} · ${w.start}</small><b>${past?"This workshop has ended":"Reserve your slot"}</b></div>
+        <div class="book-h"><small>${d.getDate()} ${MON[d.getMonth()]} · ${w.start}</small><b>${past?"This workshop has ended":"Reserve your slot"}</b>${w.limitedSeats?`<span class="pill o" style="justify-self:start;margin-top:4px;font-size:.65rem">🔥 Limited seats, hurry up!</span>`:""}</div>
         <div class="book-b">
           ${past?`<p class="muted">Get notified when ${esc(w.byShort)} is back at RB.</p><button class="btn btn-o" data-enquire data-course="Workshops">Notify me</button>`:`
           ${w.tiers.map((t,i)=>`<label class="tier"><input type="radio" name="tier" value="${t.k}" ${i===0?"checked":""}><span class="t"><b>${t.label}</b><small>${t.note}</small></span><span class="amt">${inr(t.amt)}</span></label>`).join("")}
@@ -2070,7 +2175,7 @@ function facilitators(){
       <ul class="ticks"><li>Founded RB in 2003</li><li>Built the 2-month curriculum and SOP-based instructor training</li><li>Leads RB's growth across Chennai</li></ul></div>
   </div></section>
   <section class="tint-soft"><div class="wrap"><div class="head"><span class="eyebrow">Workshop artists</span><h2><span class="b">Guest</span> <span class="o">choreographers</span></h2></div>
-    <div class="fgrid">${WORKSHOPS.map(w=>`<a class="fac" href="#ws-${w.id}"><div class="ph"><img src="${w.photo}" alt="${esc(w.by)}" loading="lazy"></div><div class="cb"><span class="role">${w.kind==="Wellness"?"Wellness facilitator":"Guest choreographer"}</span><h3>${esc(w.by)}</h3><p>${w.kind} workshop · ${shortDate(w.date)}</p><span class="link" style="margin-top:4px">View workshop ${I.arrow}</span></div></a>`).join("")}</div></div></section>
+    <div class="fgrid">${WORKSHOPS.map(w=>`<a class="fac" href="#ws-${w.id}"><div class="ph"><img src="${w.photo}" alt="${esc(w.by)}" loading="lazy"></div><div class="cb"><span class="role">${esc(w.role||(w.kind==="Wellness"?"Wellness facilitator":"Guest choreographer"))}</span><h3>${esc(w.by)}</h3><p>${w.kind} workshop · ${shortDate(w.date)}</p><span class="link" style="margin-top:4px">View workshop ${I.arrow}</span></div></a>`).join("")}</div></div></section>
   <section><div class="wrap"><div class="head"><span class="eyebrow">Core faculty</span><h2><span class="b">Trainers by</span> <span class="o">discipline</span></h2><p class="lede">Certified, experienced and supervised before batches. Trainer profiles are added as each faculty member is introduced.</p></div>
     <div class="fgrid">${faculty.map(f=>`<div class="fac"><div class="ph" style="aspect-ratio:4/3"><img src="${f[0]}" alt="" loading="lazy" style="object-position:center"></div><div class="cb"><h3>${f[1]}</h3><p>${f[2]}</p></div></div>`).join("")}</div></div></section>`;
 }
