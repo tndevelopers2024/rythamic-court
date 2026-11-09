@@ -54,7 +54,24 @@ switch ($event) {
         $amount = ($payment['amount'] ?? 0) / 100;
         $email = $payment['email'] ?? '';
         $contact = $payment['contact'] ?? '';
+        $notes = $payment['notes'] ?? [];
+        $workshopTitle = $notes['workshop'] ?? '';
+        $qty = (int)($notes['qty'] ?? 1);
         error_log("[Razorpay Webhook] Payment captured: ID: $paymentId, Order: $orderId, Amount: ₹$amount, Contact: $contact, Email: $email");
+
+        // Auto-increment slot count if for Pookkal workshop
+        if (stripos($workshopTitle, 'pookkal') !== false && file_exists(__DIR__ . '/workshop-slots.php')) {
+            require_once __DIR__ . '/workshop-slots.php';
+            try {
+                recordWorkshopBooking('pookkal-pookkum', $qty, [
+                    'name'       => $notes['booking_ref'] ?? $contact,
+                    'ref'        => $notes['booking_ref'] ?? '',
+                    'payment_id' => $paymentId
+                ]);
+            } catch (Throwable $eWh) {
+                error_log('[Webhook/Slots] ' . $eWh->getMessage());
+            }
+        }
         break;
 
     case 'payment.failed':

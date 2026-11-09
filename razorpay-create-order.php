@@ -79,6 +79,24 @@ if ($amount <= 0) {
     exit;
 }
 
+// -------------------------------------------------------------
+// Real-Time Tier Slot & Split Validation (Automated Capacity Check)
+// -------------------------------------------------------------
+if (file_exists(__DIR__ . '/workshop-slots.php')) {
+    require_once __DIR__ . '/workshop-slots.php';
+    $wsName = $notes['workshop'] ?? '';
+    if (stripos($wsName, 'pookkal') !== false) {
+        $wsData = getWorkshopData('pookkal-pookkum');
+        $qty = max(1, (int)($notes['qty'] ?? 1));
+        $split = calculateBookingSplit($wsData, $qty);
+        
+        // Auto-enforce server-calculated split amount
+        if ((float)$split['total_amount'] > 0) {
+            $amount = (float)$split['total_amount'];
+        }
+    }
+}
+
 // Razorpay takes amount in smallest currency unit (paise for INR)
 $amountInPaise = (int)round($amount * 100);
 

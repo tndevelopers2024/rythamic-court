@@ -1,0 +1,24 @@
+{
+    "pookkal-pookkum": {
+        "id": "pookkal-pookkum",
+        "title": "Pookkal Pookum Tharunam",
+        "booked": 5,
+        "tier1_limit": 10,
+        "tier2_limit": 20,
+        "tier1_price": 899,
+        "tier2_price": 999,
+        "tier3_price": 1099,
+        "history": [
+            {
+                "at": "2026-11-09T16:58:20+05:30",
+                "qty": 0,
+                "note": "Admin adjusted count to 10"
+            },
+            {
+                "at": "2026-11-09T16:58:49+05:30",
+                "qty": 0,
+                "note": "Admin adjusted count to 0"
+            }
+        ]
+    }
+}

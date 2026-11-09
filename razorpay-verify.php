@@ -375,6 +375,35 @@ if (file_exists(__DIR__ . '/save-sheet.php')) {
     $sheetInfo   = $sheetResult['message'] ?? '';
 }
 
+// -------------------------------------------------------------
+// Update Automated Workshop Slot Counter
+// -------------------------------------------------------------
+if (file_exists(__DIR__ . '/workshop-slots.php')) {
+    require_once __DIR__ . '/workshop-slots.php';
+    $wsKey = '';
+    if (stripos($workshop, 'pookkal') !== false) {
+        $wsKey = 'pookkal-pookkum';
+    }
+    if (!empty($wsKey)) {
+        try {
+            recordWorkshopBooking($wsKey, $qty, [
+                'name'       => $name,
+                'phone'      => $phone,
+                'email'      => $email,
+                'tier'       => $tier,
+                'amount'     => $amount,
+                'ref'        => $ref,
+                'payment_id' => $paymentId,
+                'order_id'   => $orderId,
+                'method'     => $method,
+                'status'     => $status
+            ]);
+        } catch (Throwable $eSlot) {
+            error_log('[Slots] Could not update slot count: ' . $eSlot->getMessage());
+        }
+    }
+}
+
 echo json_encode([
     'success'      => true,
     'verified'     => true,
