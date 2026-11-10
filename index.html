@@ -2148,7 +2148,6 @@
       border: 0;
       background: none;
       width: 100%;
-      max-width: 300px;
       transition: transform .25s ease, box-shadow .25s ease;
       display: block
     }
@@ -2262,6 +2261,8 @@
       padding: 16px
     }
 
+    
+
     .person img {
       width: 120px;
       height: 140px;
@@ -2269,6 +2270,8 @@
       object-position: top;
       border-radius: 12px
     }
+
+    
 
     .person h3 {
       font-size: 1.3rem;
@@ -2542,7 +2545,7 @@
       }
 
       .wdhero .poster {
-        max-width: 300px
+        
       }
     }
 
@@ -2552,12 +2555,19 @@
       }
 
       .person {
-        grid-template-columns: 90px minmax(0, 1fr)
+        grid-template-columns: 1fr;
       }
 
       .person img {
-        width: 90px;
-        height: 110px
+        width: 100%;
+        height: 100%;
+      }
+      .org{
+        flex-direction: column;
+      }
+      .org img{
+        width:100%;
+        height:100%;
       }
     }
 
@@ -9206,14 +9216,14 @@
           limitedSeats: true,
           progressiveTiers: true,
           tiers: [
-            { k: "first10", label: "First 10 Slots", note: "₹899/- · First Tire(Slots 1 to 10)", amt: 899, badge: "First 10 · ₹899" },
-            { k: "second10", label: "Second 10 Slots", note: "₹999/- · Second Tier (Slots 11 to 20)", amt: 999, badge: "Second 10 · ₹999" },
-            { k: "thereafter", label: "Thereafter Pass", note: "₹1,099/- · Standard Entry (Slot 21 onwards)", amt: 1099, badge: "Thereafter · ₹1099" }
+            { k: "tier1", label: "Slots 1–10", range: "1–10", note: "₹899/- · First Tier (Slots 1 to 10)", amt: 899, badge: "Slots 1–10 · ₹899", status: "active", remaining: 10, limit: 10 },
+            { k: "tier2", label: "Slots 11–20", range: "11–20", note: "₹999/- · Second Tier (Slots 11 to 20)", amt: 999, badge: "Slots 11–20 · ₹999", status: "upcoming", remaining: 10, limit: 10 },
+            { k: "tier3", label: "Slots 21+", range: "21+", note: "₹1,099/- · Standard Entry (Slot 21 onwards)", amt: 1099, badge: "Slots 21+ · ₹1,099", status: "upcoming", remaining: null, limit: null }
           ],
           about: [
             "Step into the enchanting realm of Semi-Classical dance with Master Yuvraaj Jayakumar! Set to the timeless, romantic melody 'Pookkal Pookum Tharunam', this 2-hour masterclass is crafted for dancers who want to master emotive storytelling, fluid body language, and nuanced expressions.",
             "Hosted at the Autumn Dance Theatre, Valasaravakkam, Chennai, this workshop breaks down intricate mudras (hand gestures), delicate abhinaya (facial expressions), and cinematic semi-classical choreography count by count.",
-            "Special tiered fees condition: First 10 slots at ₹899/-, second 10 slots at ₹999/-, and ₹1,099/- thereafter. Limited seats are available to ensure personalised correction and camera feedback from Master Yuvraaj."
+            "Dynamic tiered pricing: First 10 slots @ ₹899/-, second 10 slots @ ₹999/-, and ₹1,099/- thereafter. Limited seats are available to ensure personalised coaching and video feedback from Master Yuvraaj."
           ],
           learn: [
             "Count-by-count choreography breakdown to 'Pookkal Pookum Tharunam'",
@@ -9788,10 +9798,97 @@
       }
       function toggleDrawer(on) { const p = $("#fpanel"); if (!p) return; p.classList.toggle("open", on); $(".fscrim")?.remove(); if (on) { const s = document.createElement("div"); s.className = "fscrim"; s.onclick = () => toggleDrawer(false); document.body.appendChild(s) } }
 
+      function paymentLogosHTML() {
+        return `
+          <div class="secure-pay-row" style="margin-top:14px;padding-top:12px;border-top:1px dashed #E2E8F0;text-align:center">
+            <div class="secure" style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:.76rem;color:#475569;font-weight:600;margin-bottom:8px">
+              ${I.lock}<span>Secure payment · UPI, cards &amp; net banking</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap">
+              <!-- UPI Badge -->
+              <span class="pay-badge" style="background:#fff;border:1px solid #E2E8F0;border-radius:6px;padding:2px 7px;display:inline-flex;align-items:center;height:24px;box-shadow:0 1px 2px rgba(0,0,0,0.04)" title="UPI - Instant Payment">
+                <svg viewBox="0 0 46 16" height="13" style="display:block">
+                  <path fill="#097939" d="M10 2L5.8 9.5l2.2 3.8 4.2-7.5z"/>
+                  <path fill="#ED7524" d="M12.5 2l-2.2 3.8 2.2 3.8 2.2-3.8z"/>
+                  <text x="17" y="13" fill="#1E293B" font-family="'Poppins',Arial,sans-serif" font-size="11" font-weight="900" letter-spacing="-0.3">UPI</text>
+                </svg>
+              </span>
+
+              <!-- Google Pay Badge -->
+              <span class="pay-badge" style="background:#fff;border:1px solid #E2E8F0;border-radius:6px;padding:2px 7px;display:inline-flex;align-items:center;gap:3px;height:24px;box-shadow:0 1px 2px rgba(0,0,0,0.04)" title="Google Pay">
+                <svg viewBox="0 0 16 16" height="12" style="display:block">
+                  <path fill="#4285F4" d="M15.68 8.18c0-.57-.05-1.11-.15-1.64H8v3.1h4.31a3.69 3.69 0 0 1-1.6 2.42v2.01h2.59c1.51-1.39 2.38-3.44 2.38-5.89z"/>
+                  <path fill="#34A853" d="M8 16c2.16 0 3.97-.72 5.3-1.94l-2.6-2.01c-.72.48-1.63.77-2.7.77-2.08 0-3.84-1.4-4.47-3.29H.84v2.08A8 8 0 0 0 8 16z"/>
+                  <path fill="#FBBC05" d="M3.53 9.53a4.78 4.78 0 0 1 0-3.06V4.39H.84a8 8 0 0 0 0 7.22l2.69-2.08z"/>
+                  <path fill="#EA4335" d="M8 3.18c1.17 0 2.23.4 3.06 1.19l2.3-2.3C11.97.72 10.16 0 8 0A8 8 0 0 0 .84 4.39l2.69 2.08c.63-1.89 2.39-3.29 4.47-3.29z"/>
+                </svg>
+                <span style="font-size:.68rem;font-weight:700;color:#5F6368;font-family:'Product Sans',Arial,sans-serif">Pay</span>
+              </span>
+
+              <!-- PhonePe Badge -->
+              <span class="pay-badge" style="background:#fff;border:1px solid #E2E8F0;border-radius:6px;padding:2px 7px;display:inline-flex;align-items:center;gap:3px;height:24px;box-shadow:0 1px 2px rgba(0,0,0,0.04)" title="PhonePe">
+                <svg viewBox="0 0 16 16" height="13" style="display:block">
+                  <circle cx="8" cy="8" r="8" fill="#5F259F"/>
+                  <text x="4" y="12" fill="#fff" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="900">पे</text>
+                </svg>
+                <span style="font-size:.68rem;font-weight:800;color:#5F259F;font-family:'Poppins',Arial,sans-serif">PhonePe</span>
+              </span>
+
+              <!-- Paytm Badge -->
+              <span class="pay-badge" style="background:#fff;border:1px solid #E2E8F0;border-radius:6px;padding:2px 7px;display:inline-flex;align-items:center;height:24px;box-shadow:0 1px 2px rgba(0,0,0,0.04)" title="Paytm">
+                <svg viewBox="0 0 38 14" height="12" style="display:block">
+                  <text x="0" y="12" fill="#002970" font-family="'Poppins',Arial,sans-serif" font-size="12" font-weight="900">pay</text>
+                  <text x="22" y="12" fill="#00B9F5" font-family="'Poppins',Arial,sans-serif" font-size="12" font-weight="900">tm</text>
+                </svg>
+              </span>
+
+              <!-- Visa Badge -->
+              <span class="pay-badge" style="background:#fff;border:1px solid #E2E8F0;border-radius:6px;padding:2px 7px;display:inline-flex;align-items:center;height:24px;box-shadow:0 1px 2px rgba(0,0,0,0.04)" title="Visa Cards">
+                <svg viewBox="0 0 34 14" height="12" style="display:block">
+                  <text x="1" y="12" fill="#1434CB" font-family="'Arial Black',sans-serif" font-size="13" font-weight="900" font-style="italic" letter-spacing="-0.5">VISA</text>
+                </svg>
+              </span>
+
+              <!-- Mastercard Badge -->
+              <span class="pay-badge" style="background:#fff;border:1px solid #E2E8F0;border-radius:6px;padding:2px 7px;display:inline-flex;align-items:center;height:24px;box-shadow:0 1px 2px rgba(0,0,0,0.04)" title="Mastercard">
+                <svg viewBox="0 0 28 16" height="13" style="display:block">
+                  <circle cx="9" cy="8" r="7" fill="#EB001B"/>
+                  <circle cx="19" cy="8" r="7" fill="#F79E1B"/>
+                  <path d="M14 2.5a7 7 0 0 1 0 11 7 7 0 0 1 0-11z" fill="#FF5F00"/>
+                </svg>
+              </span>
+
+              <!-- RuPay Badge -->
+              <span class="pay-badge" style="background:#fff;border:1px solid #E2E8F0;border-radius:6px;padding:2px 7px;display:inline-flex;align-items:center;height:24px;box-shadow:0 1px 2px rgba(0,0,0,0.04)" title="RuPay Cards">
+                <svg viewBox="0 0 46 14" height="12" style="display:block">
+                  <text x="1" y="12" fill="#002D62" font-family="'Poppins',Arial,sans-serif" font-size="12" font-weight="900" font-style="italic">RuPay</text>
+                  <path d="M39 3l-2.5 4 2.5 4h2.5l-2.5-4 2.5-4z" fill="#00A651"/>
+                  <path d="M42 3l-2.5 4 2.5 4h2.5l-2.5-4 2.5-4z" fill="#F15A24"/>
+                </svg>
+              </span>
+
+              <!-- Net Banking Badge -->
+              <span class="pay-badge" style="background:#fff;border:1px solid #E2E8F0;border-radius:6px;padding:2px 7px;display:inline-flex;align-items:center;gap:4px;height:24px;box-shadow:0 1px 2px rgba(0,0,0,0.04)" title="Net Banking (SBI, HDFC, ICICI, Axis & all major banks)">
+                <svg viewBox="0 0 18 16" height="12" fill="none" stroke="#0B4EA2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block">
+                  <path d="M2 6l7-4 7 4M3 6v6M6 6v6M12 6v6M15 6v6M1 14h16"/>
+                </svg>
+                <span style="font-size:.65rem;font-weight:700;color:#0B4EA2;font-family:'Poppins',Arial,sans-serif">NetBanking</span>
+              </span>
+            </div>
+          </div>
+        `;
+      }
+
       function renderProgressiveBookingHTML(w, q = 1) {
         const slotData = w._slotData || {};
         const splits = slotData.splits || {};
-        const activeTier = w.tiers.find(t => !t.disabled) || w.tiers[0];
+        const tiersList = (slotData.tiers && slotData.tiers.length) ? slotData.tiers : w.tiers;
+        const activeTier = tiersList.find(t => !t.disabled) || tiersList[0];
+        const booked = slotData.booked_count ?? 0;
+        const maxSeats = slotData.max_seats || 50;
+        const isSoldOut = slotData.is_sold_out || (booked >= maxSeats);
+        const totalRemaining = Math.max(0, maxSeats - booked);
+
         const curSplit = splits[q] || {
           qty: q,
           total_amount: activeTier.amt * q,
@@ -9799,55 +9896,108 @@
           split_notice: "",
           breakdown: [{ label: activeTier.label, qty: q, unit_price: activeTier.amt, subtotal: activeTier.amt * q, text: q + " ticket(s) @ " + inr(activeTier.amt) }]
         };
-        const booked = slotData.booked_count ?? 0;
         const urgency = slotData.urgency_text || "";
 
         return `
-          ${urgency ? `<div style="font-size:.78rem;font-weight:700;color:var(--orange);background:#FFF4EA;padding:6px 10px;border-radius:8px;margin-bottom:12px;border:1px solid #FFE2CA">${esc(urgency)}</div>` : ""}
-          <div class="tier selected" style="cursor:default;margin-bottom:12px;border:2px solid var(--orange);background:#fff">
-            <span class="t">
-              <b>Workshop Seat Pass <span class="tier-tag">${esc(activeTier.label)}</span></b>
-              <small>${esc(activeTier.note)}</small>
-            </span>
-            <span class="amt">${inr(activeTier.amt)}<small style="font-size:.65rem;color:var(--muted);display:block;font-weight:400">/ seat</small></span>
-          </div>
+          ${urgency ? `<div style="font-size:.8rem;font-weight:700;color:var(--orange);background:#FFF4EA;padding:8px 12px;border-radius:10px;margin-bottom:12px;border:1px solid #FFE2CA;display:flex;align-items:center;gap:6px"><span>${esc(urgency)}</span></div>` : ""}
 
-          <div class="qty">
-            <span><b>Participants</b><br><span class="small">Max 5 per booking</span></span>
-            <div class="stepper">
-              <button type="button" id="qm" aria-label="Fewer">−</button>
-              <output id="qn">${q}</output>
-              <button type="button" id="qp" aria-label="More">+</button>
+          ${isSoldOut ? `
+            <div class="tier" style="cursor:default;margin-bottom:14px;border:2px solid #EF4444;background:#FEF2F2;border-radius:12px;padding:14px">
+              <span class="t">
+                <b style="color:#B91C1C;font-size:1.05rem">Workshop Housefull 🎉</b>
+                <small style="color:#991B1B">All workshop slots are fully booked. Enquire below to join the waitlist!</small>
+              </span>
+              <span class="amt" style="color:#B91C1C">Sold Out</span>
+            </div>
+          ` : `
+            <div class="tier selected" style="cursor:default;margin-bottom:12px;border:2px solid var(--orange);background:#fff">
+              <span class="t">
+                <b>Workshop Seat Pass <span class="tier-tag">${esc(activeTier.label || ('Slots ' + activeTier.range))}</span></b>
+                <small>${esc(activeTier.note)}</small>
+              </span>
+              <span class="amt">${inr(activeTier.amt)}<small style="font-size:.65rem;color:var(--muted);display:block;font-weight:400">/ seat</small></span>
+            </div>
+
+            <div class="qty">
+              <span><b>Participants</b><br><span class="small">${totalRemaining < 5 ? `Only ${totalRemaining} seat${totalRemaining > 1 ? 's' : ''} left` : 'Max 5 per booking'}</span></span>
+              <div class="stepper">
+                <button type="button" id="qm" aria-label="Fewer">−</button>
+                <output id="qn">${q}</output>
+                <button type="button" id="qp" aria-label="More">+</button>
+              </div>
+            </div>
+
+            <div id="splitNoticeBox" style="${curSplit.is_split ? '' : 'display:none;'}background:#FFF6EB;border:1.5px solid #FFD9B5;border-radius:12px;padding:12px 14px;margin-top:12px;margin-bottom:12px;font-size:.84rem;color:#78350F;line-height:1.5">
+              <div style="font-weight:800;display:flex;align-items:center;gap:6px;margin-bottom:4px;color:#9A3412">
+                <span>⚠️</span><span>Tier Allocation Notice</span>
+              </div>
+              <div>${curSplit.split_notice || ''}</div>
+              <div style="margin-top:6px;padding-top:6px;border-top:1px dashed #FDBA74;font-size:.8rem">
+                ${(curSplit.breakdown || []).map(b => `<div>• ${b.qty} ticket${b.qty > 1 ? 's' : ''} @ ${inr(b.unit_price)} = <b>${inr(b.subtotal)}</b></div>`).join("")}
+              </div>
+            </div>
+
+            <div class="total" style="margin-top:10px">
+              <span class="muted">Total${curSplit.is_split ? ` (${q} seats)` : ''}</span>
+              <b id="tot">${inr(curSplit.total_amount)}</b>
+            </div>
+            <button class="btn btn-o" id="payBtn">Pay ${inr(curSplit.total_amount)} &amp; Reserve Slot</button>
+          `}
+
+          <!-- Styled Fees & Pricing Structure Section -->
+          <div style="background:#F8FAFD;border:1.5px solid #E2E8F0;border-radius:14px;padding:14px;margin-top:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:1rem">🎟️</span>
+                <b style="font-size:.82rem;color:var(--ink);text-transform:uppercase;letter-spacing:.03em">Fees Structure</b>
+              </div>
+              <span style="font-size:.72rem;font-weight:700;color:var(--orange);background:#FFF4EA;padding:3px 9px;border-radius:999px;border:1px solid #FFE2CA">🔥 Limited Slots</span>
+            </div>
+
+            <!-- Slabs List -->
+            <div style="display:grid;gap:6px">
+              ${tiersList.map(t => {
+                const isFilled = t.status === 'filled';
+                const isActive = t.status === 'active';
+                const slabLabel = t.range ? (t.range.indexOf('+') !== -1 ? 'Slots 21+' : ('Slots ' + t.range)) : t.label;
+                return `
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:10px;transition:all .2s ease;${
+                    isActive
+                      ? 'background:#FFF7ED;border:1.5px solid var(--orange);box-shadow:0 2px 6px rgba(244,123,32,0.12);'
+                      : isFilled
+                      ? 'background:#F1F4F9;border:1px solid #E2E8F0;opacity:.75;'
+                      : 'background:#ffffff;border:1px dashed #CBD5E1;'
+                  }">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <span style="font-size:.78rem;font-weight:${isActive ? '800' : '600'};${
+                        isActive ? 'color:var(--orange)' : isFilled ? 'color:#64748B;text-decoration:line-through;' : 'color:var(--ink);'
+                      }">${esc(slabLabel)}</span>
+                      ${
+                        isActive
+                          ? `<span style="font-size:.62rem;font-weight:800;background:var(--orange);color:#fff;padding:2px 7px;border-radius:999px;letter-spacing:.02em">ACTIVE NOW 🔥</span>`
+                          : isFilled
+                          ? `<span style="font-size:.62rem;font-weight:700;background:#E2E8F0;color:#64748B;padding:2px 6px;border-radius:999px">Filled ✓</span>`
+                          : `<span style="font-size:.62rem;font-weight:600;background:#F1F5F9;color:#64748B;padding:2px 6px;border-radius:999px">Upcoming</span>`
+                      }
+                    </div>
+                    <div style="text-align:right">
+                      <b style="font-size:.84rem;font-weight:800;${
+                        isActive ? 'color:var(--orange);' : isFilled ? 'color:#94A3B8;text-decoration:line-through;' : 'color:var(--ink);'
+                      }">${inr(t.amt)}</b>
+                      ${isActive && t.remaining != null && t.k !== 'tier3' ? `<span style="display:block;font-size:.64rem;font-weight:700;color:var(--orange);line-height:1.1">${t.remaining} left</span>` : (isActive && t.k === 'tier3' ? `<span style="display:block;font-size:.64rem;font-weight:700;color:var(--orange);line-height:1.1">Open</span>` : '')}
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+
+            <div style="margin-top:10px;font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:4px">
+              <span>ℹ️</span><span>Pricing automatically advances to the next tier as earlier slots fill up.</span>
             </div>
           </div>
 
-          <div id="splitNoticeBox" style="${curSplit.is_split ? '' : 'display:none;'}background:#FFF6EB;border:1.5px solid #FFD9B5;border-radius:12px;padding:12px 14px;margin-top:12px;margin-bottom:12px;font-size:.84rem;color:#78350F;line-height:1.5">
-            <div style="font-weight:800;display:flex;align-items:center;gap:6px;margin-bottom:4px;color:#9A3412">
-              <span>⚠️</span><span>Tier Allocation Notice</span>
-            </div>
-            <div>${curSplit.split_notice || ''}</div>
-            <div style="margin-top:6px;padding-top:6px;border-top:1px dashed #FDBA74;font-size:.8rem">
-              ${(curSplit.breakdown || []).map(b => `<div>• ${b.qty} ticket${b.qty > 1 ? 's' : ''} @ ${inr(b.unit_price)} = <b>${inr(b.subtotal)}</b></div>`).join("")}
-            </div>
-          </div>
-
-          <div class="total" style="margin-top:10px">
-            <span class="muted">Total${curSplit.is_split ? ` (${q} seats)` : ''}</span>
-            <b id="tot">${inr(curSplit.total_amount)}</b>
-          </div>
-          <button class="btn btn-o" id="payBtn">Pay ${inr(curSplit.total_amount)} &amp; reserve slot</button>
-
-          <div style="background:var(--soft);border-radius:12px;padding:10px 14px;margin-top:14px;font-size:.76rem;color:var(--muted)">
-            <b style="color:var(--ink);display:block;margin-bottom:4px">Pricing Structure:</b>
-            <div style="display:flex;justify-content:space-between">
-              <span style="${booked < 10 ? 'font-weight:700;color:var(--orange)' : (booked >= 10 ? 'text-decoration:line-through;opacity:.6' : '')}">1–10: ${inr(w.tiers[0].amt)}</span>
-              <span style="${booked >= 10 && booked < 20 ? 'font-weight:700;color:var(--orange)' : (booked >= 20 ? 'text-decoration:line-through;opacity:.6' : '')}">11–20: ${inr(w.tiers[1].amt)}</span>
-              <span style="${booked >= 20 ? 'font-weight:700;color:var(--orange)' : ''}">21+: ${inr(w.tiers[2].amt)}</span>
-            </div>
-          </div>
-
-          <button class="btn btn-line" data-enquire data-course="Workshop: ${esc(w.title)} (${esc(w.byShort)})" style="margin-top:8px">Enquire now</button>
-          <div class="secure">${I.lock}Secure payment · UPI, cards &amp; net banking</div>
+          <button class="btn btn-line" data-enquire data-course="Workshop: ${esc(w.title)} (${esc(w.byShort)})" style="margin-top:10px">Enquire now</button>
+          ${paymentLogosHTML()}
         `;
       }
 
@@ -9935,10 +10085,10 @@
               <button class="btn btn-o" id="payBtn" disabled style="opacity:.6;cursor:not-allowed">Workshop full</button>`;
               }
               return `<div class="total"><span class="muted">Total</span><b id="tot">${inr(avail.amt)}</b></div>
-            <button class="btn btn-o" id="payBtn">Pay & reserve slot</button>`;
+            <button class="btn btn-o" id="payBtn">Pay & Reserve Slot</button>`;
             })()}
           <button class="btn btn-line" data-enquire data-course="Workshop: ${esc(w.title)} (${esc(w.byShort)})">Enquire now</button>
-          <div class="secure">${I.lock}Secure payment · UPI, cards & net banking</div>`
+          ${paymentLogosHTML()}`
           )}
         </div>
       </aside>
@@ -10319,10 +10469,16 @@
 
               const renderUI = () => {
                 if (!asideBody) return;
+                const slotData = w._slotData || {};
+                const maxSeats = slotData.max_seats || 50;
+                const booked = slotData.booked_count ?? 0;
+                const maxAvail = Math.min(5, Math.max(1, maxSeats - booked));
+                if (q > maxAvail) q = maxAvail;
+
                 asideBody.innerHTML = renderProgressiveBookingHTML(w, q);
                 const curSplit = getSplit(q);
                 if ($("#qm")) $("#qm").onclick = () => { if (q > 1) { q--; renderUI(); } };
-                if ($("#qp")) $("#qp").onclick = () => { if (q < 5) { q++; renderUI(); } };
+                if ($("#qp")) $("#qp").onclick = () => { if (q < maxAvail) { q++; renderUI(); } };
                 if ($("#payBtn")) $("#payBtn").onclick = () => {
                   openBooking(w, 'auto', q, curSplit);
                 };

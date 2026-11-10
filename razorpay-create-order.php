@@ -89,7 +89,26 @@ if (file_exists(__DIR__ . '/workshop-slots.php')) {
         $wsData = getWorkshopData('pookkal-pookkum');
         $qty = max(1, (int)($notes['qty'] ?? 1));
         $split = calculateBookingSplit($wsData, $qty);
-        
+
+        // Check if fully booked or not enough seats remaining
+        if (!empty($split['is_sold_out']) || ($split['total_avail'] ?? 0) <= 0) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'error'   => 'Sorry, this workshop is fully booked (all seats are reserved).'
+            ]);
+            exit;
+        }
+
+        if (($split['total_avail'] ?? 0) < $qty) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'error'   => "Only {$split['total_avail']} seat(s) remaining for this workshop. Please adjust your participant count."
+            ]);
+            exit;
+        }
+
         // Auto-enforce server-calculated split amount
         if ((float)$split['total_amount'] > 0) {
             $amount = (float)$split['total_amount'];

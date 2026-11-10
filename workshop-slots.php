@@ -6,10 +6,13 @@
  * - Table `workshop_slots`: Stores limits, prices, and manual offsets
  * - Table `workshop_bookings`: Stores all confirmed attendee registrations
  * 
- * Dynamic Rules:
- * - First 10 slots:    ₹899
- * - Second 10 slots:   ₹999 (slots 11 to 20)
- * - Thereafter:        ₹1099 (slots 21 onwards)
+ * Dynamic Rules (5 Progressive Tiers):
+ * - Slab 1: Slots 1–10   ➔ ₹899
+ * - Slab 2: Slots 11–20  ➔ ₹999
+ * - Slab 3: Slots 21–30  ➔ ₹1,099
+ * - Slab 4: Slots 31–40  ➔ ₹1,199
+ * - Slab 5: Slots 41–50  ➔ ₹1,299
+ * - Total Capacity: 50 seats
  */
 
 error_reporting(E_ALL);
@@ -46,7 +49,7 @@ function getWorkshopData(string $workshopId): array {
 
             if (!$slot) {
                 // Auto-seed if not yet present
-                $insert = $pdo->prepare("INSERT INTO workshop_slots (workshop_id, title, tier1_limit, tier2_limit, tier1_price, tier2_price, tier3_price, manual_offset) VALUES (:id, :title, 10, 20, 899, 999, 1099, 0)");
+                $insert = $pdo->prepare("INSERT INTO workshop_slots (workshop_id, title, tier1_limit, tier2_limit, tier1_price, tier2_price, tier3_price, max_seats, manual_offset) VALUES (:id, :title, 10, 20, 899, 999, 1099, 50, 0)");
                 $insert->execute(['id' => $workshopId, 'title' => 'Pookkal Pookum Tharunam']);
                 $slot = [
                     'workshop_id' => $workshopId,
@@ -56,6 +59,7 @@ function getWorkshopData(string $workshopId): array {
                     'tier1_price' => 899,
                     'tier2_price' => 999,
                     'tier3_price' => 1099,
+                    'max_seats' => 50,
                     'manual_offset' => 0
                 ];
             }
@@ -78,6 +82,7 @@ function getWorkshopData(string $workshopId): array {
                 'tier1_price' => (int)($slot['tier1_price'] ?? 899),
                 'tier2_price' => (int)($slot['tier2_price'] ?? 999),
                 'tier3_price' => (int)($slot['tier3_price'] ?? 1099),
+                'max_seats'   => max(1, (int)($slot['max_seats'] ?? 50)),
                 'source' => 'mysql'
             ];
         } catch (Throwable $e) {
@@ -104,6 +109,7 @@ function getWorkshopData(string $workshopId): array {
         'tier1_price' => 899,
         'tier2_price' => 999,
         'tier3_price' => 1099,
+        'max_seats' => 50,
         'source' => 'default'
     ];
 }
@@ -115,166 +121,182 @@ function calculateWorkshopTiers(array $ws): array {
     $booked = (int)($ws['booked'] ?? 0);
     $t1Limit = (int)($ws['tier1_limit'] ?? 10);
     $t2Limit = (int)($ws['tier2_limit'] ?? 20);
+    $maxSeats = max($t2Limit, (int)($ws['max_seats'] ?? 50));
+
     $t1Price = (int)($ws['tier1_price'] ?? 899);
     $t2Price = (int)($ws['tier2_price'] ?? 999);
     $t3Price = (int)($ws['tier3_price'] ?? 1099);
 
-    $t1Left = max(0, $t1Limit - $booked);
-    $t2Left = max(0, $t2Limit - max($t1Limit, $booked));
-
-    // Determine current active tier
-    if ($booked < $t1Limit) {
-        $activeKey = 'first10';
-        $activePrice = $t1Price;
-        $urgencyText = "🔥 Only {$t1Left} of {$t1Limit} slots left at ₹{$t1Price}!";
-    } elseif ($booked < $t2Limit) {
-        $activeKey = 'second10';
-        $activePrice = $t2Price;
-        $urgencyText = "⚡ Second Tier: Only {$t2Left} slots left at ₹{$t2Price}!";
-    } else {
-        $activeKey = 'thereafter';
-        $activePrice = $t3Price;
-        $urgencyText = "✨ Standard Booking open at ₹{$t3Price}";
-    }
-
-    $tiers = [
+    $defTiers = [
         [
-            'k' => 'first10',
-            'label' => 'First 10 Slots',
-            'note' => $booked >= $t1Limit 
-                ? 'Early bird sold out (10/10 slots filled)' 
-                : "₹{$t1Price}/- · Only {$t1Left} slots remaining!",
-            'amt' => $t1Price,
-            'badge' => $booked >= $t1Limit ? 'Sold Out' : "",
-            'disabled' => ($booked >= $t1Limit),
-            'disabledBadge' => 'Sold Out',
-            'remaining' => $t1Left,
-            'limit' => $t1Limit
+            'k'     => 'tier1',
+            'label' => 'Slots 1–10',
+            'range' => '1–10',
+            'start' => 0,
+            'limit' => $t1Limit,
+            'amt'   => $t1Price
         ],
         [
-            'k' => 'second10',
-            'label' => 'Second 10 Slots',
-            'note' => $booked < $t1Limit 
-                ? "₹{$t2Price}/- · Unlocks after first 10 slots fill" 
-                : ($booked >= $t2Limit 
-                    ? 'Second slot sold out (10/10 slots filled)' 
-                    : "₹{$t2Price}/- · Only {$t2Left} slots remaining!"),
-            'amt' => $t2Price,
-            'badge' => $booked < $t1Limit 
-                ? 'Opens Next' 
-                : ($booked >= $t2Limit ? 'Sold Out' : "₹{$t2Price} · Active"),
-            'disabled' => ($booked < $t1Limit || $booked >= $t2Limit),
-            'disabledBadge' => $booked < $t1Limit ? 'Upcoming' : 'Sold Out',
-            'remaining' => $t2Left,
-            'limit' => 10
+            'k'     => 'tier2',
+            'label' => 'Slots 11–20',
+            'range' => '11–20',
+            'start' => $t1Limit,
+            'limit' => $t2Limit,
+            'amt'   => $t2Price
         ],
         [
-            'k' => 'thereafter',
-            'label' => 'Standard Thereafter Pass',
-            'note' => $booked < $t2Limit 
-                ? "₹{$t3Price}/- · Standard rate (opens after slot 20)" 
-                : "₹{$t3Price}/- · Regular Entry",
-            'amt' => $t3Price,
-            'badge' => $booked < $t2Limit ? 'Opens at Slot 21' : "₹{$t3Price} · Active",
-            'disabled' => ($booked < $t2Limit),
-            'disabledBadge' => 'Upcoming',
-            'remaining' => null,
-            'limit' => null
+            'k'     => 'tier3',
+            'label' => 'Slots 21+',
+            'range' => '21+',
+            'start' => $t2Limit,
+            'limit' => $maxSeats,
+            'amt'   => $t3Price
         ]
     ];
 
+    $totalRemaining = max(0, $maxSeats - $booked);
+    $activeKey = 'sold_out';
+    $activePrice = $t3Price;
+    $activeLabel = 'Sold Out';
+    $urgencyText = "⚠️ Workshop Housefull! All slots are fully booked.";
+
+    $tiers = [];
+    foreach ($defTiers as $t) {
+        $tierCap = $t['limit'] - $t['start'];
+        $isFilled = ($booked >= $t['limit']);
+        $isActive = ($booked >= $t['start'] && $booked < $t['limit']);
+        $isUpcoming = ($booked < $t['start']);
+
+        $seatsLeftInTier = max(0, $t['limit'] - max($t['start'], $booked));
+
+        if ($isActive) {
+            $activeKey = $t['k'];
+            $activePrice = $t['amt'];
+            $activeLabel = $t['label'];
+            if ($t['k'] === 'tier3') {
+                $urgencyText = "🔥 Standard Booking open at ₹" . number_format($t['amt']) . " (Slots 21 onwards)!";
+            } else {
+                $urgencyText = "🔥 Only {$seatsLeftInTier} of {$tierCap} slots left at ₹" . number_format($t['amt']) . "! (Seats {$t['range']})";
+            }
+        }
+
+        if ($isFilled) {
+            $note = "Filled ({$tierCap}/{$tierCap} seats booked)";
+            $badge = "Sold Out";
+            $disabledBadge = "Sold Out";
+            $status = "filled";
+        } elseif ($isActive) {
+            if ($t['k'] === 'tier3') {
+                $note = "₹" . number_format($t['amt']) . "/- · Standard Entry";
+            } else {
+                $note = "₹" . number_format($t['amt']) . "/- · Only {$seatsLeftInTier} slots remaining!";
+            }
+            $badge = "Active";
+            $disabledBadge = "";
+            $status = "active";
+        } else {
+            $note = "₹" . number_format($t['amt']) . "/- · Opens at seat " . ($t['start'] + 1);
+            $badge = "Upcoming";
+            $disabledBadge = "Upcoming";
+            $status = "upcoming";
+        }
+
+        $tiers[] = [
+            'k'             => $t['k'],
+            'label'         => $t['label'],
+            'range'         => $t['range'],
+            'amt'           => $t['amt'],
+            'note'          => $note,
+            'badge'         => $badge,
+            'status'        => $status,
+            'disabled'      => !$isActive,
+            'disabledBadge' => $disabledBadge,
+            'remaining'     => ($t['k'] === 'tier3' ? null : $seatsLeftInTier),
+            'limit'         => $tierCap,
+            'total_limit'   => $t['limit']
+        ];
+    }
+
     return [
-        'booked_count' => $booked,
-        'active_key'   => $activeKey,
-        'active_price' => $activePrice,
-        'urgency_text' => $urgencyText,
-        'source'       => $ws['source'] ?? 'mysql',
-        'tiers'        => $tiers
+        'booked_count'    => $booked,
+        'max_seats'       => $maxSeats,
+        'total_remaining' => $totalRemaining,
+        'is_sold_out'     => ($booked >= $maxSeats),
+        'active_key'      => $activeKey,
+        'active_price'    => $activePrice,
+        'active_label'    => $activeLabel,
+        'urgency_text'    => $urgencyText,
+        'source'          => $ws['source'] ?? 'mysql',
+        'tiers'           => $tiers
     ];
 }
 
 /**
  * Calculate multi-tier split breakdown for a requested quantity
- * e.g., if only 2 slots left in Tier 1 and customer books 3:
- * 2 seats charged @ Tier 1 price + 1 seat charged @ Tier 2 price!
+ * Dynamic split across: Slots 1–10, Slots 11–20, and Slots 21–50 (₹1,099 flat)
  */
 function calculateBookingSplit(array $ws, int $qty = 1): array {
     $qty = max(1, $qty);
     $booked = (int)($ws['booked'] ?? 0);
     $t1Limit = (int)($ws['tier1_limit'] ?? 10);
     $t2Limit = (int)($ws['tier2_limit'] ?? 20);
+    $maxSeats = max($t2Limit, (int)($ws['max_seats'] ?? 50));
+
     $t1Price = (int)($ws['tier1_price'] ?? 899);
     $t2Price = (int)($ws['tier2_price'] ?? 999);
     $t3Price = (int)($ws['tier3_price'] ?? 1099);
 
-    $availT1 = max(0, $t1Limit - $booked);
-    $takeT1 = min($qty, $availT1);
+    $tiers = [
+        ['k' => 'tier1', 'label' => 'Slots 1–10',  'range' => '1–10',  'start' => 0,        'end' => $t1Limit,  'price' => $t1Price],
+        ['k' => 'tier2', 'label' => 'Slots 11–20', 'range' => '11–20', 'start' => $t1Limit, 'end' => $t2Limit,  'price' => $t2Price],
+        ['k' => 'tier3', 'label' => 'Slots 21+',   'range' => '21+',   'start' => $t2Limit, 'end' => $maxSeats, 'price' => $t3Price],
+    ];
 
-    $rem1 = $qty - $takeT1;
-    $bookedT2 = max(0, ($booked + $takeT1) - $t1Limit);
-    $availT2 = max(0, ($t2Limit - $t1Limit) - $bookedT2);
-    $takeT2 = min($rem1, $availT2);
+    $totalAvail = max(0, $maxSeats - $booked);
+    $effectiveQty = min($qty, $totalAvail);
 
-    $takeT3 = $rem1 - $takeT2;
-
+    $cursor = $booked;
+    $rem = $effectiveQty;
     $breakdown = [];
     $totalAmount = 0;
 
-    if ($takeT1 > 0) {
-        $sub = $takeT1 * $t1Price;
+    foreach ($tiers as $t) {
+        if ($rem <= 0) break;
+        if ($cursor >= $t['end']) continue;
+        $availInTier = $t['end'] - max($t['start'], $cursor);
+        if ($availInTier <= 0) continue;
+
+        $take = min($rem, $availInTier);
+        $sub = $take * $t['price'];
         $totalAmount += $sub;
         $breakdown[] = [
-            'tier'       => 'first10',
-            'label'      => 'First 10 Slots',
-            'qty'        => $takeT1,
-            'unit_price' => $t1Price,
+            'tier'       => $t['k'],
+            'label'      => $t['label'],
+            'range'      => $t['range'],
+            'qty'        => $take,
+            'unit_price' => $t['price'],
             'subtotal'   => $sub,
-            'text'       => "{$takeT1} ticket" . ($takeT1 > 1 ? "s" : "") . " @ ₹{$t1Price}"
+            'text'       => "{$take} ticket" . ($take > 1 ? "s" : "") . " @ ₹" . number_format($t['price'])
         ];
-    }
-    if ($takeT2 > 0) {
-        $sub = $takeT2 * $t2Price;
-        $totalAmount += $sub;
-        $breakdown[] = [
-            'tier'       => 'second10',
-            'label'      => 'Second 10 Slots',
-            'qty'        => $takeT2,
-            'unit_price' => $t2Price,
-            'subtotal'   => $sub,
-            'text'       => "{$takeT2} ticket" . ($takeT2 > 1 ? "s" : "") . " @ ₹{$t2Price}"
-        ];
-    }
-    if ($takeT3 > 0) {
-        $sub = $takeT3 * $t3Price;
-        $totalAmount += $sub;
-        $breakdown[] = [
-            'tier'       => 'thereafter',
-            'label'      => 'Standard Thereafter Pass',
-            'qty'        => $takeT3,
-            'unit_price' => $t3Price,
-            'subtotal'   => $sub,
-            'text'       => "{$takeT3} ticket" . ($takeT3 > 1 ? "s" : "") . " @ ₹{$t3Price}"
-        ];
+        $cursor += $take;
+        $rem -= $take;
     }
 
     $isSplit = (count($breakdown) > 1);
     $splitNotice = "";
     if ($isSplit) {
-        $parts = array_map(fn($b) => "<b>{$b['qty']} ticket" . ($b['qty'] > 1 ? "s" : "") . " @ ₹{$b['unit_price']}</b>", $breakdown);
-        if ($takeT1 > 0 && $takeT2 > 0 && $takeT3 == 0) {
-            $splitNotice = "Only {$takeT1} seat" . ($takeT1 > 1 ? "s" : "") . " available in Tier 1. {$parts[0]} and {$parts[1]}.";
-        } elseif ($takeT2 > 0 && $takeT3 > 0 && $takeT1 == 0) {
-            $splitNotice = "Only {$takeT2} seat" . ($takeT2 > 1 ? "s" : "") . " available in Tier 2. {$parts[0]} and {$parts[1]}.";
-        } else {
-            $splitNotice = implode(" + ", $parts);
-        }
+        $first = $breakdown[0];
+        $parts = array_map(fn($b) => "<b>{$b['qty']} ticket" . ($b['qty'] > 1 ? "s" : "") . " @ ₹" . number_format($b['unit_price']) . "</b>", $breakdown);
+        $splitNotice = "Only {$first['qty']} seat" . ($first['qty'] > 1 ? "s" : "") . " remaining in {$first['label']} ({$first['range']}). Your booking covers " . implode(" + ", $parts) . ".";
     }
 
     return [
         'qty'           => $qty,
         'booked_before' => $booked,
-        'avail_tier1'   => $availT1,
-        'avail_tier2'   => $availT2,
+        'max_seats'     => $maxSeats,
+        'total_avail'   => $totalAvail,
+        'effective_qty' => $effectiveQty,
+        'is_sold_out'   => ($totalAvail <= 0),
         'total_amount'  => $totalAmount,
         'is_split'      => $isSplit,
         'split_notice'  => $splitNotice,
@@ -337,7 +359,17 @@ function recordWorkshopBooking(string $workshopId, int $qty = 1, array $meta = [
         $counts = !empty($raw) ? json_decode($raw, true) : [];
         if (!is_array($counts)) $counts = [];
         if (!isset($counts[$workshopId])) {
-            $counts[$workshopId] = ['id' => $workshopId, 'booked' => 0, 'tier1_limit' => 10, 'tier2_limit' => 20, 'tier1_price' => 899, 'tier2_price' => 999, 'tier3_price' => 1099, 'history' => []];
+            $counts[$workshopId] = [
+                'id' => $workshopId, 
+                'booked' => 0, 
+                'tier1_limit' => 10, 
+                'tier2_limit' => 20, 
+                'tier1_price' => 899, 
+                'tier2_price' => 999, 
+                'tier3_price' => 1099,
+                'max_seats' => 50,
+                'history' => []
+            ];
         }
         $counts[$workshopId]['booked'] = ($counts[$workshopId]['booked'] ?? 0) + $qty;
         @file_put_contents($backupFile, json_encode($counts, JSON_PRETTY_PRINT), LOCK_EX);
